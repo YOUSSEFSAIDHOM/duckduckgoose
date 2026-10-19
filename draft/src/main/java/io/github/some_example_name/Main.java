@@ -4,33 +4,34 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
-import io.github.some_example_name.Player.Ball;
-import io.github.some_example_name.Player.Bat;
-import io.github.some_example_name.Player.Block;
+import io.github.some_example_name.entities.Goose;
+import io.github.some_example_name.entities.Player;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Main extends ApplicationAdapter {
     ShapeRenderer shape;
-    Ball ball;
-    Bat bat;
+    Player player;
+    ArrayList<Goose> geese = new ArrayList<>();
 
-    ArrayList<Block> blocks = new ArrayList<>();
+    Random random = new Random();
 
     @Override
     public void create () {
+        player = new Player(50, 50, 8, 13, 20);
         shape = new ShapeRenderer();
-        ball = new Ball(400, 300, 25, 5, 5, 1.08F);
-        bat = new Bat(0, 50, 40, 15);
 
-        // Generating a bunch of blocks
-        int blockWidth = 60;
-        int blockHeight = 20;
-        for (int y = Gdx.graphics.getHeight()/2; y < Gdx.graphics.getHeight(); y += blockHeight + 10) {
-            for (int x = 0; x < Gdx.graphics.getWidth(); x+= blockWidth+10) {
-                blocks.add(new Block(x, y, blockWidth, blockHeight));
-            }
+        // Instantiating geese
+        for (int i = 0; i < 30; i++) {
+            geese.add(
+                    new Goose(
+                            random.nextFloat(Gdx.graphics.getWidth()),
+                            random.nextFloat(Gdx.graphics.getHeight()),
+                            5,
+                            10
+                    )
+            );
         }
     }
 
@@ -39,30 +40,20 @@ public class Main extends ApplicationAdapter {
         // Clear the screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        ball.update();
-        bat.update(Gdx.input.getX(), Gdx.graphics.getHeight()-Gdx.input.getY());
+        // Updates
+        player.update();
 
-        ball.checkCollision(bat);
-
+        // Rendering
         shape.begin(ShapeRenderer.ShapeType.Filled);
-
-        ball.draw(shape);
-        bat.draw(shape);
-        for (Block block : blocks) {
-            block.draw(shape);
-            ball.checkCollision(block);
+        // ...
+        for (Goose goose : geese) {
+            goose.update(player, geese);
+            goose.draw(shape);
         }
-        cleanUp();
+        player.draw(shape);
+        // ...
         shape.end();
     }
 
-    public void cleanUp() {
-        for (int i = 0; i < blocks.size(); i++) {
-            Block b = blocks.get(i);
-            if (b.destroyed) {
-                blocks.remove(b);
-                i--;
-            }
-        }
-    }
+    // Custom methods here
 }
