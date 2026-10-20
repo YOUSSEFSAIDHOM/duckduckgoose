@@ -1,32 +1,59 @@
 package com.badlogic.drop;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.GL20;
+import com.Goose;
+import com.Player;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private Texture image;
+    ShapeRenderer shape;
+    Player player;
+    ArrayList<Goose> geese = new ArrayList<>();
+
+    Random random = new Random();
 
     @Override
-    public void create() {
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+    public void create () {
+        player = new Player(50, 50, 8, 13, 20);
+        shape = new ShapeRenderer();
+
+        // Instantiating geese
+        for (int i = 0; i < 30; i++) {
+            geese.add(
+                new Goose(
+                    random.nextFloat(Gdx.graphics.getWidth()),
+                    random.nextFloat(Gdx.graphics.getHeight()),
+                    5,
+                    10
+                )
+            );
+        }
     }
 
     @Override
-    public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
+    public void render () {
+        // Clear the screen
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Updates
+        player.update();
+
+        // Rendering
+        shape.begin(ShapeRenderer.ShapeType.Filled);
+        // ...
+        for (Goose goose : geese) {
+            goose.update(player, geese);
+            goose.draw(shape);
+        }
+        player.draw(shape);
+        // ...
+        shape.end();
     }
 
-    @Override
-    public void dispose() {
-        batch.dispose();
-        image.dispose();
-    }
+    // Custom methods here
 }
