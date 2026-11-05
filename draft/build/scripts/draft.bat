@@ -74,7 +74,7 @@ set CLASSPATH=%APP_HOME%\lib\draft.jar;%APP_HOME%\lib\gdx-backend-lwjgl3-1.13.1.
 
 
 @rem Execute draft
-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %DRAFT_OPTS%  -classpath "%CLASSPATH%" io.github.some_example_name.Lwjgl3Launcher %*
+"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %DRAFT_OPTS%  -classpath "%CLASSPATH%" io.github.duckduckgoose.Lwjgl3Launcher %*
 
 :end
 @rem End local scope for the variables with windows NT shell

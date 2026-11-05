@@ -27,19 +27,3 @@ dependencies {
 application {
     mainClass = 'io.github.duckduckgoose.Lwjgl3Launcher'
 }
-
-tasks.named('run') {
-    // On NixOS, libGL.so.1 (from libglvnd) isn't on the default library
-    // path, so GLFW fails with "GLX: Failed to load GLX" without this.
-    //
-    //
-    // The store has several libglvnd-1.7.0 builds from different
-    // dependency closures; not all of them actually work here, so this
-    // path is pinned to the one verified to load successfully rather than
-    // picked automatically. If this breaks after a nixos-rebuild/channel
-    // update, find a working one with:
-    //   find /nix/store -maxdepth 1 -type d -iname '*-libglvnd-*' ! -iname '*-dev'
-
-    def glvndLib = '/nix/store/adas3ix7v8zry5i1nqagc2j76y0ka7rx-libglvnd-1.7.0/lib'
-    environment 'LD_LIBRARY_PATH', "/run/opengl-driver/lib:${glvndLib}:${System.getenv('LD_LIBRARY_PATH') ?: ''}"
-}
