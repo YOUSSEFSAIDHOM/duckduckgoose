@@ -1,16 +1,44 @@
 {
-    "activeFile": "/home/youssef/Downloads/CampusMap.tmx",
+    "activeFile": "/home/youssef/Documents/engProject/draft/assets/ver_3/maps/main_path.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "/home/youssef/Documents/engProject/draft/assets/ver_3/assets/City.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/youssef/Documents/engProject/draft/assets/ver_3/assets/Forest.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/youssef/Documents/engProject/draft/assets/ver_3/assets/Swamp.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/youssef/Documents/engProject/draft/assets/ver_3/maps/langwith.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 776.6666666666666,
+                "y": 858.3333333333333
+            }
+        },
+        "/home/youssef/Documents/engProject/draft/assets/ver_3/maps/main_path.tmx": {
+            "expandedObjectLayers": [
+                7
+            ],
+            "scale": 2,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 745,
+                "y": 1423.75
+            }
+        },
         "/home/youssef/Downloads/CampusMap.tmx": {
             "scale": 0.25,
             "selectedLayer": 9,
             "viewCenter": {
-                "x": 1028,
-                "y": 714
+                "x": 940,
+                "y": 846
             }
         },
         "/home/youssef/Downloads/CampusMap.tmx#1_Terrains_32x32": {
@@ -48,12 +76,13 @@
     "openFiles": [
         "walls.tsx",
         "plains.tsx",
-        "/home/youssef/Downloads/CampusMap.tmx"
+        "/home/youssef/Documents/engProject/draft/assets/ver_3/maps/main_path.tmx"
     ],
     "project": "gooseMap.tiled-project",
     "recentFiles": [
         "walls.tsx",
         "plains.tsx",
+        "/home/youssef/Documents/engProject/draft/assets/ver_3/maps/main_path.tmx",
         "/home/youssef/Downloads/CampusMap.tmx",
         "map"
     ],

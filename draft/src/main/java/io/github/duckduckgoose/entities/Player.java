@@ -5,53 +5,55 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 // This is for the colour don't get confused with the other one cuz intellij just imports some bs
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import io.github.duckduckgoose.GlobalVariables;
 import io.github.duckduckgoose.items.AbstractItem;
 
 
 public class Player extends AbstractEntity {
     // Core movement variables
-    float speed;
-    float sprintSpeed;
-    float currentSpeed;
     float xVelocity = 0;
     float yVelocity = 0;
-    int health;
+    float health = GlobalVariables.playerHealth;
+    float speed = GlobalVariables.playerSpeed;
+    float sprintSpeed = GlobalVariables.playerSprintSpeed;
+    float currentSpeed;
+    public boolean alive = true;
 
     // Inventory
-    AbstractItem hotbar [] = new AbstractItem[5];
+    AbstractItem hotbar [] = new AbstractItem[GlobalVariables.inventorySize];
     AbstractItem currentItem;
 
     final Texture playerSheet = new Texture("ver_3/assets/Farmer_1_32x32.png");
     final TextureRegion idlePlayer = new TextureRegion(playerSheet,96,0,32,64);
 
     // Pre-set values
-    Color colour = new Color(Color.CORAL);
+    Color takeDamageColour = new Color(Color.CORAL);
 
-    public Player(float x, float y, float speed, float sprintSpeed, float size, int health) {
+    public Player(float x, float y) {
         /**
          * Player is able to move around, with W, A, S, D keys and use items,
          * specify its x and y to indicate starting position
          *
          * @param speed is the regular speed at which the player runs at
          * @param sprintSpeed when left shift is held down you can change the speed to this
-         * @param size is radius, atm the player is just a circle (placeholder)
+         * @param size is radius, entity collisions work by treating player/geese as circles
          */
         this.x = x; this.y = y;
-        this.speed = speed;
-        this.sprintSpeed = sprintSpeed;
-        this.size = size;
-        this.health = health;
         this.bounds = new Rectangle(this.x, this.y, 0.5f, 0.5f);
+        this.size = GlobalVariables.playerRadius;
     }
 
     public void update(float deltaTime) {
+
+        // First check the player is still alive
+
+        if (health <= 0) {
+            alive = false;
+        }
 
         // -=-=-=-=-=-=-=-=-=
         //    Movement
@@ -88,14 +90,6 @@ public class Player extends AbstractEntity {
     }
 
     public void draw(SpriteBatch batch) {
-        /**
-         * @param shape for this class to call any drawing functionality,
-         *              we need an instance of a libGDX ShapeRenderer object
-         */
-        // For now let's just make this player a circle
-//        shape.setColor(colour);
-//        shape.circle(x, y, size);
-
         float drawX = bounds.x + bounds.width / 2 - 0.5f;
         float drawY = bounds.y;
 
@@ -104,8 +98,12 @@ public class Player extends AbstractEntity {
 
     // Health methods
 
+    public float getHealth() {
+        return health;
+    }
+
     public void decreaseHealth() {
-        this.health--;
+        this.health -= GlobalVariables.gooseDamage;
     }
 
     public void increaseHealth() {
@@ -114,12 +112,12 @@ public class Player extends AbstractEntity {
 
     // Item management
 
-    public void pickupItem() {
+    public void pickupItem(AbstractItem item) {
         // Check if hotbar is full before picking up item
 
     }
 
-    public void equipping() {
+    public void holdItem() {
         // use number system and set currentItem to one of hotbar
     }
 

@@ -8,17 +8,18 @@ import io.github.duckduckgoose.entities.Player;
 
 public class CollisionUtils {
 
-    // To replace the push functionality here
 
     public static Vector2 push(AbstractEntity entityA, AbstractEntity entityB) {
+        // Uses circle as bounds so it looks smoother
         float ox = entityA.getX() - entityB.getX();
         float oy = entityA.getY() - entityB.getY();
         float distance = Math.max((float) Math.sqrt(ox*ox + oy*oy), 0.01F);
         float overlap = (entityA.getSize() + entityB.getSize() - distance) / 2f;
 
-        if (overlap <= 0) { return Vector2.Zero; } // The '.Zero' might be problematic, if stubborn just put Vector2(0,0);
+        if (overlap <= 0) { return new Vector2(0,0); } // The '.Zero' might be problematic, if stubborn just put Vector2(0,0);
 
         return new Vector2(ox / distance * overlap, oy / distance * overlap);
+
     }
 
     public static Vector2 wallPush(AbstractEntity player, Rectangle wall) {

@@ -1,5 +1,8 @@
 package io.github.duckduckgoose.entities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 // This is for the colour don't get confused with the other one cuz intellij just imports some bs
@@ -7,29 +10,34 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import io.github.duckduckgoose.GlobalVariables;
 import io.github.duckduckgoose.collision.CollisionUtils;
 
 import java.util.List;
 
 
 public class Goose extends AbstractEntity {
-    float speed;
-    float distance, dx, dy;
+    float speed = GlobalVariables.gooseSpeed;
+    float distance, targetX, targetY, dx, dy;
+
+    // Temp
+    Texture playerSheet = new Texture("ver_3/assets/Farmer_1_32x32.png");
+    TextureRegion idlePlayer = new TextureRegion(playerSheet,96,0,32,64);
 
     Color colour = new Color(Color.WHITE);
     boolean chasing = true;
 
-    public Goose(float x, float y, float speed, float size) {
+    public Goose(float x, float y) {
         /**
          * Geese chase player and can deal supposed damage to the player
          *
          * @param speed how many pixels the goose covers per tick.
-         * @param size is radius, atm the goose is just a circle (placeholder)
+         * @param size is radius, entity collisions work by treating player/geese as circles
          */
         this.x = x; this.y = y;
-        this.speed = speed;
-        this.size = size;
+        this.targetX = x; this.targetY = y;
         this.bounds = new Rectangle(this.x, this.y, 0.3f, 0.3f);
+        this.size = GlobalVariables.gooseRadius;
     }
 
     public void chasePlayer(float deltaTime) {
@@ -39,38 +47,18 @@ public class Goose extends AbstractEntity {
         }
     }
 
-    public boolean checkCollision(Player player) {
-        Circle playerCircle = new Circle(player.getX(), player.getY(), player.getSize());
-        Circle thisGoose = new Circle(x, y, size);
-        return playerCircle.overlaps(thisGoose);
-    }
-
-    public boolean checkCollision(Goose goose) {
-        if (this == goose) {
-            return false;
-        }
-
-        Circle gooseCircle = new Circle(goose.getX(), goose.getY(), goose.getSize());
-        Circle thisGoose = new Circle(x, y, size);
-        return gooseCircle.overlaps(thisGoose);
-    }
-
-    public void update(Player player, List<Goose> geese, float deltaTime) {
+    public void update(Player player, float deltaTime) {
         dx = player.getX() - x;
         dy = player.getY() - y;
 
         distance = (float) Math.sqrt(dx*dx + dy*dy);
         if (chasing) { chasePlayer(deltaTime); }
-        // separate(geese, player);as
         bounds.x = x; bounds.y = y;
     }
 
-    public void draw(ShapeRenderer shape) {
-        /**
-         * @param shape for this class to call any drawing functionality,
-         *              we need an instance of a libGDX ShapeRenderer object
-         */
-        shape.setColor(colour);
-        shape.circle(x, y, size);
+    public void draw(SpriteBatch batch) {
+        float drawX = bounds.x + bounds.width / 2 - 0.5f;
+        float drawY = bounds.y;
+        batch.draw(idlePlayer, drawX, drawY, 1, 2);
     }
 }

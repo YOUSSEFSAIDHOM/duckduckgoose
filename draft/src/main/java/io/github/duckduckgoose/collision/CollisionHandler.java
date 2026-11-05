@@ -38,8 +38,9 @@ public class CollisionHandler {
         for (Goose gooseA : geese) {
             Vector2 pushVector = new Vector2();
 
-            if (gooseA.checkCollision(player)) {
+            if (gooseA.checkEntityCollision(player)) {
                 pushVector.add(CollisionUtils.push(gooseA, player));
+                player.decreaseHealth();
             }
 
             for (Rectangle wall : walls) {
@@ -50,7 +51,7 @@ public class CollisionHandler {
 
             for (Goose gooseB : geese) {
                 // The check if gooseA is the same instance of gooseB is already done in the checkCollision function
-                if (gooseA.checkCollision(gooseB)) {
+                if (gooseA.checkEntityCollision(gooseB)) {
                     pushVector.add(CollisionUtils.push(gooseA, gooseB));
                 }
             }

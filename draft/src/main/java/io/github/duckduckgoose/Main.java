@@ -2,10 +2,9 @@ package io.github.duckduckgoose;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -24,6 +23,7 @@ import java.util.Random;
 public class Main extends ApplicationAdapter {
     ShapeRenderer shape;
     GameMap gameMap;
+    OrthographicCamera uiCamera;
     OrthographicCamera camera;
     FitViewport viewport;
     private float deltaTime;
@@ -36,7 +36,8 @@ public class Main extends ApplicationAdapter {
     SpriteBatch batch;
 
     Random random = new Random();
-    private final String mapPath = "ver_3/maps/main_path.tmx";
+
+    float targetX; float targetY;
 
     @Override
     public void create () {
@@ -45,26 +46,36 @@ public class Main extends ApplicationAdapter {
          * Anything that needs to be instantiated is here
          */
 
-        // Create the map
+        // Initialise the UI Camera
+        uiCamera = new OrthographicCamera();
+        uiCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        gameMap = new GameMap(mapPath);
+        // Create the map
         camera = new OrthographicCamera();
         viewport = new FitViewport(20, 12, camera);
         batch = new SpriteBatch();
-
-        // Parameter order is : x, y, speed, sprintSpeed, size, health
-        spawn = gameMap.getPlayerSpawn();
-        player = new Player(spawn.x, spawn.y, 8, 12, 0.8f, 100);
         shape = new ShapeRenderer();
+
+        startGame();
+    }
+
+    public void startGame() {
+        // Parameter order is : x, y, size, health
+
+        if (gameMap != null) {
+            gameMap.dispose();
+        } gameMap = new GameMap(randomMap());
+
+        spawn = gameMap.getPlayerSpawn();
+        player = new Player(spawn.x, spawn.y);
         // Instantiating geese
-        for (int i = 0; i < 30; i++) {
+        geese.clear();
+        for (int i = 0; i < GlobalVariables.geeseQuantity; i++) {
             // Parameter order is : x, y, speed, size
             geese.add(
                     new Goose(
                             random.nextFloat(gameMap.getWidth()),
-                            random.nextFloat(gameMap.getHeight()),
-                            10,
-                            0.3f
+                            random.nextFloat(gameMap.getHeight())
                     )
             );
         }
@@ -82,11 +93,12 @@ public class Main extends ApplicationAdapter {
 
         deltaTime = Gdx.graphics.getDeltaTime();
 
-        // Updates
-        player.update(deltaTime);
-
-        // Updating Map
-        camera.position.set(player.getX(), player.getY(), 0);
+        // Updating Camera
+        targetX = player.getX(); targetY = player.getY();
+        // using linear interpolation to add some smooth factor to the trackinge = Gdx.graphics.getDeltaTime();
+        float smooth = 1f - (float) Math.pow(1f - GlobalVariables.lerpFactor, deltaTime * 60f);
+        camera.position.x = MathUtils.lerp(camera.position.x, targetX, smooth);
+        camera.position.y = MathUtils.lerp(camera.position.y, targetY, smooth);
 
         float halfWidth = camera.viewportWidth / 2;
         float halfHeight = camera.viewportHeight / 2;
@@ -97,40 +109,63 @@ public class Main extends ApplicationAdapter {
 
         ScreenUtils.clear(0, 0, 0, 1);
         gameMap.render(camera);
+
         // ----
 
-        shape.setProjectionMatrix(camera.combined);
-        shape.begin(ShapeRenderer.ShapeType.Filled);
-
-        collisionHandler.update();
-        updateGeese();
-
+        shape.setProjectionMatrix(uiCamera.combined);
         batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-        player.draw(batch);
-        batch.end();
-        // ...
-        shape.end();
-    }
 
-    public void updateGeese() {
-        for (Goose goose : geese) {
-            goose.update(player, geese, deltaTime);
-            goose.draw(shape);
+        batch.begin();
+
+        // Updates
+        if (player.alive) {
+            collisionHandler.update();
+            player.update(deltaTime);
+            updateGeese();
+            player.draw(batch);
+        } else {
+            // Press space to restart game
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                startGame();
+            }
         }
+
+        batch.end();
+
+        // Healthbar
+        shape.begin(ShapeRenderer.ShapeType.Filled);
+        displayHealthBar(shape);
+        shape.end();
+
     }
 
     @Override
     public void resize(int width, int height) {
+
         viewport.update(width, height);
+        uiCamera.setToOrtho(false, width, height);
     }
 
     @Override
     public void dispose() {
         gameMap.dispose();
-//        shapes.dispose();
-//        batch.dispose();
-//        player.dispose();
     }
+
     // Custom methods here
+
+    public void displayHealthBar(ShapeRenderer shape) {
+        shape.setColor(Color.RED);
+        shape.rect(0, Gdx.graphics.getHeight()-20, player.getHealth(), 20);
+    }
+
+    public void updateGeese() {
+        for (Goose goose : geese) {
+            goose.update(player, deltaTime);
+            goose.draw(batch);
+        }
+    }
+
+    public String randomMap() {
+        return GlobalVariables.mapList.get(random.nextInt(GlobalVariables.mapList.size()));
+    }
 }

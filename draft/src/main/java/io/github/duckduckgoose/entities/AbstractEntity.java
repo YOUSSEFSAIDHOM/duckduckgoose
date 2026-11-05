@@ -1,5 +1,6 @@
 package io.github.duckduckgoose.entities;
 
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 
 public class AbstractEntity {
@@ -22,5 +23,16 @@ public class AbstractEntity {
 
     public boolean checkWallCollision(Rectangle wall) {
         return this.bounds.overlaps(wall);
+    }
+
+    public boolean checkEntityCollision(AbstractEntity entity) {
+        // Use circles for this instead of bounds to make the collision smoother
+        if (this == entity) {
+            return false;
+        }
+
+        Circle thisEntity = new Circle(this.getX(), this.getY(), this.getSize());
+        Circle otherEntity = new Circle(entity.getX(), entity.getY(), entity.getSize());
+        return thisEntity.overlaps(otherEntity);
     }
 }
