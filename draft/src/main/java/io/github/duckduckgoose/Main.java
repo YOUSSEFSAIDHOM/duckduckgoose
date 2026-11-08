@@ -4,21 +4,29 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.duckduckgoose.collision.CollisionHandler;
 import io.github.duckduckgoose.entities.Goose;
 import io.github.duckduckgoose.entities.Player;
 import io.github.duckduckgoose.items.AbstractItem;
 import io.github.duckduckgoose.mapping.GameMap;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import static com.badlogic.gdx.Gdx.gl;
 
 public class Main extends ApplicationAdapter {
     ShapeRenderer shape;
@@ -39,6 +47,10 @@ public class Main extends ApplicationAdapter {
 
     float targetX; float targetY;
 
+    private Stage stage;
+    private Skin skin;
+    private boolean gameStarted = false;
+
     @Override
     public void create () {
         /**
@@ -55,6 +67,39 @@ public class Main extends ApplicationAdapter {
         viewport = new FitViewport(20, 12, camera);
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
+
+        // Create the controls UI
+        skin = new Skin(Gdx.files.internal("ver_3/ui/glassy-ui.json"));
+
+        stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        Gdx.input.setInputProcessor(stage);
+
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        stage.addActor(mainTable);
+
+        Label movement_label = new Label("W = Up, S = Down, A = Left, D = Right", skin);
+        mainTable.add(movement_label).width(100).height(100).left().expand().padLeft(10);
+        mainTable.row();
+
+        Label items_label = new Label("1 = Use item 1, 2 = Use item 2", skin);
+        mainTable.add(items_label).width(100).height(100).left().expand().padLeft(10);
+        mainTable.row();
+
+        Label restart_label = new Label("Spacebar = Restart", skin);
+        mainTable.add(restart_label).width(100).height(100).left().expand().padLeft(10);
+        mainTable.row();
+
+        TextButton textButton = new TextButton("Start!", skin);
+        mainTable.add(textButton).expand().bottom().width(300).height(100);
+
+        textButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                gameStarted = true;
+                mainTable.setVisible(false);
+            }
+        });
 
         startGame();
     }
@@ -91,6 +136,7 @@ public class Main extends ApplicationAdapter {
          * This acts as our game loop.
          */
 
+
         deltaTime = Gdx.graphics.getDeltaTime();
 
         // Updating Camera
@@ -115,27 +161,34 @@ public class Main extends ApplicationAdapter {
         shape.setProjectionMatrix(uiCamera.combined);
         batch.setProjectionMatrix(camera.combined);
 
-        batch.begin();
+        if (gameStarted) {
 
-        // Updates
-        if (player.alive) {
-            collisionHandler.update();
-            player.update(deltaTime);
-            updateGeese();
-            player.draw(batch);
-        } else {
-            // Press space to restart game
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                startGame();
+            batch.begin();
+
+            // Updates
+            if (player.alive) {
+                collisionHandler.update();
+                player.update(deltaTime);
+                updateGeese();
+                player.draw(batch);
+            } else {
+                // Press space to restart game
+                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                    startGame();
+                }
             }
+
+            batch.end();
+
+            // Healthbar
+            shape.begin(ShapeRenderer.ShapeType.Filled);
+            displayHealthBar(shape);
+            shape.end();
         }
 
-        batch.end();
-
-        // Healthbar
-        shape.begin(ShapeRenderer.ShapeType.Filled);
-        displayHealthBar(shape);
-        shape.end();
+        stage.getViewport().apply();
+        stage.act();
+        stage.draw();
 
     }
 
@@ -144,10 +197,15 @@ public class Main extends ApplicationAdapter {
 
         viewport.update(width, height);
         uiCamera.setToOrtho(false, width, height);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void dispose() {
+
+        stage.dispose();
+        skin.dispose();
+
         gameMap.dispose();
     }
 
