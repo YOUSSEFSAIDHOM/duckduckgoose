@@ -3,7 +3,6 @@ package com;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-
 // This is for the colour don't get confused with the other one cuz intellij just imports some bs
 import com.badlogic.gdx.graphics.Color;
 
@@ -14,6 +13,7 @@ public class Player {
     float speed;
     float sprintSpeed;
     float currentSpeed;
+    private EnergyDrink energyDrink = new EnergyDrink();
 
     float xVelocity = 0;
     float yVelocity = 0;
@@ -27,6 +27,11 @@ public class Player {
     }
 
     public int getSize() { return size; }
+
+    // Activate the Energy Drink
+    public void useEnergyDrink() {
+         energyDrink.use();
+    }
 
     public Player(float x, float y, float speed, float sprintSpeed, int size) {
         /**
@@ -53,6 +58,13 @@ public class Player {
         if (Gdx.input.isKeyPressed(Input.Keys.META_SHIFT_LEFT_ON)) {
             currentSpeed = sprintSpeed;
         } else { currentSpeed = speed; }
+
+        // Update Energy Drink timer
+        energyDrink.update(Gdx.graphics.getDeltaTime());
+
+
+        // Apply speed boost
+        currentSpeed = currentSpeed * energyDrink.getSpeedMultiplier();
 
         // Y Velocity (W and S keys)
         if(Gdx.input.isKeyPressed(Input.Keys.W)) {

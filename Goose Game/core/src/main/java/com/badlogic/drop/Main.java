@@ -4,8 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.GL20;
+import com.EnergyDrink;
 import com.Goose;
 import com.Player;
+import com.EnergyDrinkPickup;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -15,12 +17,18 @@ public class Main extends ApplicationAdapter {
     Player player;
     ArrayList<Goose> geese = new ArrayList<>();
 
+
+    EnergyDrinkPickup energyDrinkPickup;
+
     Random random = new Random();
 
     @Override
     public void create () {
         player = new Player(50, 50, 8, 13, 20);
         shape = new ShapeRenderer();
+
+        // Create Energy Drink pickup
+        energyDrinkPickup = new EnergyDrinkPickup(200, 200, 10);
 
         // Instantiating geese
         for (int i = 0; i < 30; i++) {
@@ -43,6 +51,9 @@ public class Main extends ApplicationAdapter {
         // Updates
         player.update();
 
+        // Check if player collects Energy Drink
+        energyDrinkPickup.tryCollect(player);
+
         // Rendering
         shape.begin(ShapeRenderer.ShapeType.Filled);
         // ...
@@ -51,7 +62,9 @@ public class Main extends ApplicationAdapter {
             goose.draw(shape);
         }
         player.draw(shape);
-        // ...
+        // Draw Energy Drink
+        energyDrinkPickup.draw(shape);
+
         shape.end();
     }
 
