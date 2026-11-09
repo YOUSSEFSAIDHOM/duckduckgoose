@@ -15,6 +15,7 @@ import io.github.duckduckgoose.collision.CollisionHandler;
 import io.github.duckduckgoose.entities.Goose;
 import io.github.duckduckgoose.entities.Player;
 import io.github.duckduckgoose.items.AbstractItem;
+import io.github.duckduckgoose.items.BirdSeeds;
 import io.github.duckduckgoose.mapping.GameMap;
 
 import java.util.ArrayList;
@@ -34,10 +35,14 @@ public class Main extends ApplicationAdapter {
     CollisionHandler collisionHandler;
     Vector2 spawn;
     SpriteBatch batch;
+    BirdSeeds seeds;
 
     Random random = new Random();
 
     float targetX; float targetY;
+
+    GlobalVariables variables = new GlobalVariables();
+
 
     @Override
     public void create () {
@@ -79,6 +84,8 @@ public class Main extends ApplicationAdapter {
                     )
             );
         }
+        seeds = new BirdSeeds(spawn.x, spawn.y, geese);
+        seeds.setEquipped();
 
         // Once everythings been instantiated we can create a collision handler
         collisionHandler = new CollisionHandler(gameMap.getWalls(), geese, player);
@@ -123,6 +130,12 @@ public class Main extends ApplicationAdapter {
             player.update(deltaTime);
             updateGeese();
             player.draw(batch);
+
+            seeds.update(player);
+            if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+                seeds.use();
+            }
+
         } else {
             // Press space to restart game
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {

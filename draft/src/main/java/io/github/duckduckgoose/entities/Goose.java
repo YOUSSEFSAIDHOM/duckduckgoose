@@ -13,12 +13,15 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.duckduckgoose.GlobalVariables;
 import io.github.duckduckgoose.collision.CollisionUtils;
 
+
 import java.util.List;
 
 
 public class Goose extends AbstractEntity {
     float speed = GlobalVariables.gooseSpeed;
-    float distance, targetX, targetY, dx, dy;
+    float distance, targetX, targetY, dx, dy, distractTimer ;
+    List<Goose> geese;
+    boolean distracted;
 
     // Temp
     Texture playerSheet = new Texture("ver_3/assets/Farmer_1_32x32.png");
@@ -35,7 +38,6 @@ public class Goose extends AbstractEntity {
          * @param size is radius, entity collisions work by treating player/geese as circles
          */
         this.x = x; this.y = y;
-        this.targetX = x; this.targetY = y;
         this.bounds = new Rectangle(this.x, this.y, 0.3f, 0.3f);
         this.size = GlobalVariables.gooseRadius;
     }
@@ -46,10 +48,27 @@ public class Goose extends AbstractEntity {
             y += (dy / distance) * speed * deltaTime;
         }
     }
+    public void distract(float seedx, float seedy, float seconds){
+        targetX = seedx;
+        targetY = seedy;
+        distractTimer = seconds;
+    }
+
+    public boolean isDistracted(){
+        return (distractTimer >  0);
+    }
 
     public void update(Player player, float deltaTime) {
-        dx = player.getX() - x;
-        dy = player.getY() - y;
+        if (distractTimer > 0){
+            distractTimer -= deltaTime;
+            dx = targetX - x;
+            dy = targetY - y;
+        }
+        else {
+            dx = player.getX() - x;
+            dy = player.getY() - y;
+
+        }
 
         distance = (float) Math.sqrt(dx*dx + dy*dy);
         if (chasing) { chasePlayer(deltaTime); }
