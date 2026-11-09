@@ -50,6 +50,10 @@ public class Main extends ApplicationAdapter {
     private Stage stage;
     private Skin skin;
     private boolean gameStarted = false;
+    private int score = 0;
+    private Label scoreLabel;
+    private float scoreCooldown = 0f;
+    private static final float SCORE_COOLDOWN_TIME = 0.5f;
 
     @Override
     public void create () {
@@ -101,10 +105,25 @@ public class Main extends ApplicationAdapter {
             }
         });
 
+        // Create the score counter
+
+        Table scoreTable = new Table();
+        scoreTable.setFillParent(true);
+        stage.addActor(scoreTable);
+
+        scoreLabel = new Label("Score: 0", skin);
+        scoreLabel.setFontScale(2);
+        scoreTable.add(scoreLabel).top().right().pad(20).expand();
+
         startGame();
     }
 
     public void startGame() {
+
+        // Reset score counter
+        score = 0;
+        scoreLabel.setText("Score: 0");
+
         // Parameter order is : x, y, size, health
 
         if (gameMap != null) {
@@ -113,6 +132,7 @@ public class Main extends ApplicationAdapter {
 
         spawn = gameMap.getPlayerSpawn();
         player = new Player(spawn.x, spawn.y);
+
         // Instantiating geese
         geese.clear();
         for (int i = 0; i < GlobalVariables.geeseQuantity; i++) {
@@ -139,9 +159,14 @@ public class Main extends ApplicationAdapter {
 
         deltaTime = Gdx.graphics.getDeltaTime();
 
+        // Create temporary cooldown for points (reuse for items)
+        if (scoreCooldown > 0) {
+            scoreCooldown -= deltaTime;
+        }
+
         // Updating Camera
         targetX = player.getX(); targetY = player.getY();
-        // using linear interpolation to add some smooth factor to the trackinge = Gdx.graphics.getDeltaTime();
+        // using linear interpolation to add some smooth factor to the tracking = Gdx.graphics.getDeltaTime();
         float smooth = 1f - (float) Math.pow(1f - GlobalVariables.lerpFactor, deltaTime * 60f);
         camera.position.x = MathUtils.lerp(camera.position.x, targetX, smooth);
         camera.position.y = MathUtils.lerp(camera.position.y, targetY, smooth);
@@ -171,6 +196,13 @@ public class Main extends ApplicationAdapter {
                 player.update(deltaTime);
                 updateGeese();
                 player.draw(batch);
+
+                // Placeholder point allocation for item use
+
+                if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
+                    addScore(5);
+                }
+
             } else {
                 // Press space to restart game
                 if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
@@ -225,5 +257,12 @@ public class Main extends ApplicationAdapter {
 
     public String randomMap() {
         return GlobalVariables.mapList.get(random.nextInt(GlobalVariables.mapList.size()));
+    }
+
+    public void addScore(int points) {
+        if (scoreCooldown > 0) return;
+        score += points;
+        scoreLabel.setText("Score: " + score);
+        scoreCooldown = SCORE_COOLDOWN_TIME;
     }
 }

@@ -4,23 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41088aac-eb4a-4f75-b1fc-049de4dd00e5" name="Changes" comment="Problem report updated.">
-      <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/checksums/sha1-checksums.bin" afterDir="false" />
+    <list default="true" id="41088aac-eb4a-4f75-b1fc-049de4dd00e5" name="Changes" comment="Start menu GUI has been added to display the control and commence the game.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/GlobalVariables.class" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/GlobalVariables.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Lwjgl3Launcher.class" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Lwjgl3Launcher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Main$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/entities/Goose.class" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/entities/Goose.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/reports/problems/problems-report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Lwjgl3Launcher.class.uniqueId0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/GlobalVariables.class.uniqueId3" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/GlobalVariables.class.uniqueId3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Goose.class.uniqueId0" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Goose.class.uniqueId0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Main$1.class.uniqueId2" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Main$1.class.uniqueId2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Main.class.uniqueId1" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Main.class.uniqueId1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/src/main/java/io/github/duckduckgoose/GlobalVariables.java" beforeDir="false" afterPath="$PROJECT_DIR$/draft/src/main/java/io/github/duckduckgoose/GlobalVariables.java" afterDir="false" />
@@ -75,6 +73,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -141,7 +142,23 @@
       <option name="project" value="LOCAL" />
       <updated>1793973497572</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Start menu GUI has been added to display the control and commence the game.">
+      <option name="closed" value="true" />
+      <created>1794103667654</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1794103667654</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Start menu GUI has been added to display the control and commence the game.">
+      <option name="closed" value="true" />
+      <created>1794103706535</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1794103706535</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -157,6 +174,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Problem report updated." />
-    <option name="LAST_COMMIT_MESSAGE" value="Problem report updated." />
+    <MESSAGE value="Start menu GUI has been added to display the control and commence the game." />
+    <option name="LAST_COMMIT_MESSAGE" value="Start menu GUI has been added to display the control and commence the game." />
   </component>
 </project>

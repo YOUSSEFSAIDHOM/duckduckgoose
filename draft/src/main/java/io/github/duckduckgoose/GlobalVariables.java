@@ -20,7 +20,7 @@ public class GlobalVariables {
 
     public static final int inventorySize = 5;
 
-    public static final int geeseQuantity = 100;
+    public static final int geeseQuantity = 12;
 
     public static final List<String> mapList = List.of(
             "ver_3/maps/main_path.tmx",
