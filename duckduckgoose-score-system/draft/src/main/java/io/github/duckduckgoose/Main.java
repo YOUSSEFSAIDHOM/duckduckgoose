@@ -28,6 +28,8 @@ import io.github.duckduckgoose.utils.GlobalVariables;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static io.github.duckduckgoose.utils.GlobalVariables.GAME_DURATION;
+
 public class Main extends ApplicationAdapter {
     ShapeRenderer shape;
     GameMap gameMap;
@@ -49,12 +51,14 @@ public class Main extends ApplicationAdapter {
 
     private Stage stage;
     private Skin skin;
+    private Label timer_label;
+    private float timeRemaining;
     private boolean gameStarted = false;
 
     @Override
     public void create () {
-        /**
-         * The create function is part of the boiler plate for LibGDX projects.
+        /*
+         * The create function is part of the boilerplate for LibGDX projects.
          * Anything that needs to be instantiated is here
          */
 
@@ -98,8 +102,18 @@ public class Main extends ApplicationAdapter {
             public void changed(ChangeEvent event, Actor actor) {
                 gameStarted = true;
                 mainTable.setVisible(false);
+                timer_label.setVisible(true);
             }
         });
+
+        Table timerTable = new Table();
+        timerTable.setFillParent(true);
+        timerTable.center().top().scaleBy(10);
+        stage.addActor(timerTable);
+
+        timer_label = new Label("5:00", skin);
+        timerTable.add(timer_label).pad(20);
+        timer_label.setVisible(false);
 
         startGame();
     }
@@ -137,14 +151,18 @@ public class Main extends ApplicationAdapter {
         // Testing
 
 
-        // Once everythings been instantiated we can create a collision handler
+        // Once everything's been instantiated we can create a collision handler
         collisionHandler = new CollisionHandler(gameMap.getWalls(), geese, player, pickableItems);
+
+        // Reset timer
+        timeRemaining = GAME_DURATION;
+        timer_label.setText(formatTime(timeRemaining));
     }
 
     @Override
     public void render () {
-        /**
-         * The render function is part of the boiler plate as well,
+        /*
+         * The render function is part of the boilerplate as well,
          * This acts as our game loop.
          */
 
@@ -153,7 +171,7 @@ public class Main extends ApplicationAdapter {
 
         // Updating Camera
         targetX = player.getX(); targetY = player.getY();
-        // using linear interpolation to add some smooth factor to the trackinge = Gdx.graphics.getDeltaTime();
+        // using linear interpolation to add some smooth factor to the tracking = Gdx.graphics.getDeltaTime();
         float smooth = 1f - (float) Math.pow(1f - GlobalVariables.lerpFactor, deltaTime * 60f);
         camera.position.x = MathUtils.lerp(camera.position.x, targetX, smooth);
         camera.position.y = MathUtils.lerp(camera.position.y, targetY, smooth);
@@ -179,6 +197,7 @@ public class Main extends ApplicationAdapter {
 
             // Updates
             if (player.alive) {
+                updateTimer(deltaTime);
                 collisionHandler.update();
                 player.update(deltaTime);
                 updateGeese();
@@ -194,7 +213,7 @@ public class Main extends ApplicationAdapter {
 
             batch.end();
 
-            // Healthbar
+            // Health Bar
             shape.begin(ShapeRenderer.ShapeType.Filled);
             displayHealthBar(shape);
             shape.end();
@@ -238,7 +257,7 @@ public class Main extends ApplicationAdapter {
     }
 
     public void updateItems() {
-        /**
+        /*
          * Used to update items that can be picked up + bird seeds
          */
         for (AbstractItem item : pickableItems) {
@@ -257,4 +276,28 @@ public class Main extends ApplicationAdapter {
     }
 
     public Vector2 randomGooseSpawn() { return gameMap.getGeeseSpawn().get(random.nextInt(gameMap.getGeeseSpawn().size())); }
+
+    private void updateTimer(float delta) {
+        timeRemaining -= delta;
+
+        if (timeRemaining <= 0) {
+            timeRemaining = 0;
+            onTimeUp();
+        }
+
+        timer_label.setText(formatTime(timeRemaining));
+    }
+
+    private String formatTime(float seconds) {
+        int total = MathUtils.ceil(seconds);
+        int mins = total / 60;
+        int secs = total % 60;
+        return String.format("%d:%02d", mins, secs);
+    }
+
+    // For win/loss screen and score display
+    private void onTimeUp() {
+        player.alive = false;
+    }
 }
+
