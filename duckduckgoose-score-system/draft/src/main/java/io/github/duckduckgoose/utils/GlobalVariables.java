@@ -30,6 +30,7 @@ public class GlobalVariables {
     public static final float lerpFactor = 0.05f; // The higher the lerp factor the faster the camera pans
     public static final int inventorySize = 5;
     public static final int geeseQuantity = 50;
+    public static final float GAME_DURATION = 5 * 60f;
 
     public static final List<String> mapList = List.of(
             "ver_3/maps/main_path.tmx",
