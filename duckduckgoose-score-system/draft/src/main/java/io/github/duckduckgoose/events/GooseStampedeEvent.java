@@ -10,8 +10,4 @@ public class GooseStampedeEvent {
 
     }
 
-    /**
-     * add geese to the geese list and then main takes care of everything else
-     * just need to specify x and y thats it
-     */
 }

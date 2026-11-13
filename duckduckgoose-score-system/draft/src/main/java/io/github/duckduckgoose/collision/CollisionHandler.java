@@ -83,6 +83,10 @@ public class CollisionHandler {
                     gooseA.setChasing(false);
                     droppedSeedIterator.remove();
                 }
+
+                // note for sergy
+                // make a check here to see if the duck boss gets fed.
+                // duckboss.increaseFeed count
             }
 
             for (Goose gooseB : geese) {

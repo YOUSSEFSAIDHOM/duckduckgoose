@@ -7,24 +7,26 @@ import io.github.duckduckgoose.items.BirdSeeds;
 public class EventsHandler {
 
     private final ArrayList<BirdSeeds> droppedSeeds;
-    private final ArrayList<Rectangle> eventsRegion;
-    private final Rectangle seedBounds = new Rectangle();
+
+    private final Rectangle gooseStampede;
+    private final Rectangle statue;
 
     private boolean countdownStarted = false;
-    private boolean bloodMoonActive = false;
+    private boolean gooseStampedeActive = false;
     private boolean justStarted = false;
 
     private float countdown = 3f;
 
     public EventsHandler(ArrayList<BirdSeeds> droppedSeeds,
-                         ArrayList<Rectangle> eventsRegion) {
+                         Rectangle gooseStampede, Rectangle statue) {
         this.droppedSeeds = droppedSeeds;
-        this.eventsRegion = eventsRegion;
+        this.gooseStampede = gooseStampede;
+        this.statue = statue;
     }
 
     public void update(float delta) {
 
-        if (bloodMoonActive) {
+        if (gooseStampedeActive) {
             return;
         }
 
@@ -38,7 +40,7 @@ public class EventsHandler {
 
             if (countdown <= 0) {
                 countdown = 0;
-                bloodMoonActive = true;
+                gooseStampedeActive = true;
                 justStarted = true;
             }
         }
@@ -49,27 +51,18 @@ public class EventsHandler {
          * Checks for seeds in the events region layer in the map
          */
 
-        for (BirdSeeds seed : droppedSeeds) {
+        for (BirdSeeds seeds : droppedSeeds) {
 
-            seedBounds.set(
-                    seed.getX(),
-                    seed.getY(),
-                    0.5f,
-                    0.5f
-            );
-
-            for (Rectangle region : eventsRegion) {
-                if (seedBounds.overlaps(region)) {
-                    return true;
-                }
+            if (seeds.getBounds().overlaps(gooseStampede)) {
+                return true;
             }
         }
 
         return false;
     }
 
-    public boolean isBloodMoonActive() {
-        return bloodMoonActive;
+    public boolean isGooseStampedeActive() {
+        return gooseStampedeActive;
     }
 
     public boolean hasJustStarted() {
@@ -82,7 +75,7 @@ public class EventsHandler {
     }
 
     public int getCountdown() {
-        if (countdownStarted && !bloodMoonActive) {
+        if (countdownStarted && !gooseStampedeActive) {
             return (int) Math.ceil(countdown);
         }
 

@@ -25,7 +25,7 @@ public class GameMap {
 
 
     ArrayList <Rectangle> walls = new ArrayList<>();
-    ArrayList <Rectangle> eventRegions = new ArrayList<>();
+    Rectangle statue, gooseStampede;
 
     public GameMap(String path){
         map = new TmxMapLoader().load(path);
@@ -72,25 +72,17 @@ public class GameMap {
     }
 
     private void loadEventsLayer() {
-        MapLayer layer = map.getLayers().get("events");
+        MapObject object = map.getLayers().get("events").getObjects().get("gooseStampede");
+        Rectangle gooseStampede = ((RectangleMapObject) object ).getRectangle();
 
-        for(RectangleMapObject object : layer.getObjects().getByType(RectangleMapObject.class) ){
-            Rectangle border = object.getRectangle();
-
-            eventRegions.add(new Rectangle(
-                    border.x/ tile_size,
-                    border.y/ tile_size,
-                    border.width / tile_size,
-                    border.height / tile_size)
-            );
-        }
+        object = map.getLayers().get("events").getObjects().get("statue");
+        Rectangle statue = ((RectangleMapObject) object ).getRectangle();
     }
+
 
     public ArrayList<Rectangle> getWalls(){
         return this.walls;
     }
-
-    public ArrayList<Rectangle> getEventRegions() { return this.eventRegions; }
 
     public Vector2 getPlayerSpawn() {
         return playerSpawn;
@@ -98,6 +90,14 @@ public class GameMap {
 
     public ArrayList<Vector2> getGeeseSpawn() {
         return geeseSpawn;
+    }
+
+    public Rectangle getStatue() {
+        return statue;
+    }
+
+    public Rectangle getGooseStampede() {
+        return gooseStampede;
     }
 
     public float getWidth()  {

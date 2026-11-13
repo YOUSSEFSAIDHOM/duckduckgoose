@@ -114,7 +114,7 @@ public class Main extends ApplicationAdapter {
 
         if (gameMap != null) {
             gameMap.dispose();
-        } gameMap = new GameMap(randomMap());
+        } gameMap = new GameMap(GlobalVariables.mapPath);
 
         spawn = gameMap.getPlayerSpawn();
         player = new Player(spawn.x, spawn.y);
@@ -143,7 +143,7 @@ public class Main extends ApplicationAdapter {
 
         // Once everythings been instantiated we can create a collision handler
         collisionHandler = new CollisionHandler(gameMap.getWalls(), geese, player, pickableItems);
-        eventsHandler = new EventsHandler(player.getDroppedSeeds(), gameMap.getEventRegions());
+        eventsHandler = new EventsHandler(player.getDroppedSeeds(), gameMap.getGooseStampede(), gameMap.getStatue());
     }
 
     @Override
@@ -256,10 +256,6 @@ public class Main extends ApplicationAdapter {
             seeds.update(deltaTime, player);
             seeds.draw(batch);
         }
-    }
-
-    public String randomMap() {
-        return GlobalVariables.mapList.get(random.nextInt(GlobalVariables.mapList.size()));
     }
 
     public Vector2 randomGooseSpawn() { return gameMap.getGeeseSpawn().get(random.nextInt(gameMap.getGeeseSpawn().size())); }

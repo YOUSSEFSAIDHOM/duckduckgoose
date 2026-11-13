@@ -5,10 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Animation;
 
 // This is for the colour don't get confused with the other one cuz intellij just imports some bs
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import io.github.duckduckgoose.effects.EffectsHandler;
 import io.github.duckduckgoose.items.BirdSeeds;
@@ -17,7 +17,6 @@ import io.github.duckduckgoose.utils.GlobalVariables;
 import io.github.duckduckgoose.items.AbstractItem;
 
 import java.util.ArrayList;
-
 
 public class Player extends AbstractEntity {
     // Core movement variables
@@ -38,9 +37,13 @@ public class Player extends AbstractEntity {
     EffectsHandler effectsHandler = new EffectsHandler();
     int hotbarItemIndex = 0;
 
-    // yeah this needs to change
+    // Player spritesheet
     final Texture playerSheet = new Texture("ver_3/assets/sprites/Farmer_1_32x32.png");
-    final TextureRegion idlePlayer = new TextureRegion(playerSheet,96,0,32,64);
+    Animation<TextureRegion>[] walkAnimation = new Animation[4];
+    TextureRegion[] idleFrames = new TextureRegion[4];
+
+    float animationTime = 0f;
+    int facingDirection = 0;
 
     // Pre-set values
     Color takeDamageColour = new Color(Color.CORAL);
@@ -64,7 +67,28 @@ public class Player extends AbstractEntity {
          * @param size is radius, entity collisions work by treating player/geese as circles
          */
         this.size = GlobalVariables.playerRadius;
-        this.bounds = new Rectangle(x - size, y - size, 2 * size, 2 * size);
+        this.bounds = new Rectangle(this.x - size, this.y + size, 0.5f, 0.5f);
+
+        TextureRegion[][] frames = TextureRegion.split(playerSheet, 32, 64);
+
+        // Idle sprites
+        for (int i = 0; i < 4; i++) {
+            idleFrames[i] = frames[0][i];
+        }
+
+        // Walking sprites
+        for (int direction = 0; direction < 4; direction++) {
+
+            TextureRegion[] walkFrames = new TextureRegion[6];
+
+            for (int frame = 0; frame < 6; frame++) {
+                walkFrames[frame] = frames[2][direction * 6 + frame];
+            }
+
+            walkAnimation[direction] =
+                    new Animation<>(0.1f, walkFrames);
+            walkAnimation[direction].setPlayMode(Animation.PlayMode.LOOP);
+        }
     }
 
     public void update(float deltaTime) {
@@ -102,14 +126,34 @@ public class Player extends AbstractEntity {
             xVelocity = 0;
         }
 
+        // Update the direction the player is facing
+        if (xVelocity != 0 || yVelocity != 0) {
+
+            if (Math.abs(xVelocity) > Math.abs(yVelocity)) {
+                if (xVelocity > 0) {
+                    facingDirection = 0; // Right
+                } else {
+                    facingDirection = 2; // Left
+                }
+
+            } else {
+                // Moving vertically
+                if (yVelocity > 0) {
+                    facingDirection = 1; // Up
+                } else {
+                    facingDirection = 3; // Down
+                }
+            }
+
+            animationTime += deltaTime;
+
+        } else {
+            animationTime = 0;
+        }
+
         // Use item when you press E, to avoid spamming E use isKeyJustPressed
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             useItem();
-        }
-
-        // Testing bird seeds ignore this and delete it before submission
-        if (Gdx.input.isKeyPressed(Input.Keys.F)) {
-            pickUpItem(new BirdSeeds(0,0));
         }
 
         // Update hotbar
@@ -130,7 +174,18 @@ public class Player extends AbstractEntity {
         float drawX = bounds.x; // + bounds.width / 2 - 0.5f;
         float drawY = bounds.y; // + bounds.height / 2 - 0.5f;
 
-        batch.draw(idlePlayer, drawX, drawY, 1, 2);
+        TextureRegion currentFrame;
+
+        // Moving pose
+        if (xVelocity != 0 || yVelocity != 0) {
+            currentFrame = walkAnimation[facingDirection].getKeyFrame(animationTime);
+
+        } else {
+            // Idle pose
+            currentFrame = idleFrames[facingDirection];
+        }
+
+        batch.draw(currentFrame, drawX, drawY, 1, 2);
     }
 
     // Health methods
