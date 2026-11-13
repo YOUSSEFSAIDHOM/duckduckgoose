@@ -64,7 +64,7 @@ public class Player extends AbstractEntity {
          * @param size is radius, entity collisions work by treating player/geese as circles
          */
         this.size = GlobalVariables.playerRadius;
-        this.bounds = new Rectangle(this.x - size, this.y + size, 0.5f, 0.5f);
+        this.bounds = new Rectangle(x - size, y - size, 2 * size, 2 * size);
     }
 
     public void update(float deltaTime) {
@@ -105,6 +105,11 @@ public class Player extends AbstractEntity {
         // Use item when you press E, to avoid spamming E use isKeyJustPressed
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             useItem();
+        }
+
+        // Testing bird seeds ignore this and delete it before submission
+        if (Gdx.input.isKeyPressed(Input.Keys.F)) {
+            pickUpItem(new BirdSeeds(0,0));
         }
 
         // Update hotbar

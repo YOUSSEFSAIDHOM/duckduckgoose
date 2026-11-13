@@ -63,8 +63,10 @@ public class CollisionHandler {
             Vector2 pushVector = new Vector2();
 
             if (gooseA.checkEntityCollision(player)) {
+                if (gooseA.isChasing()) {
+                    player.decreaseHealth();
+                }
                 pushVector.add(CollisionUtils.push(gooseA, player));
-                player.decreaseHealth();
             }
 
             for (Rectangle wall : walls) {

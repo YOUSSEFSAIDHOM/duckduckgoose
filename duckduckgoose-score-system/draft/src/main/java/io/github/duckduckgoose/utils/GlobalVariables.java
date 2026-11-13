@@ -32,8 +32,9 @@ public class GlobalVariables {
     public static final int geeseQuantity = 50;
 
     public static final List<String> mapList = List.of(
-            "ver_3/maps/main_path.tmx",
-            "ver_3/maps/langwith.tmx",
-            "ver_3/maps/bus_stop.tmx"
+//            "ver_3/maps/main_path.tmx",
+//            "ver_3/maps/langwith.tmx",
+//            "ver_3/maps/bus_stop.tmx"
+            "ver_3/maps/campus_east.tmx"
     );
 }

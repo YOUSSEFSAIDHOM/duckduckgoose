@@ -25,6 +25,7 @@ public class GameMap {
 
 
     ArrayList <Rectangle> walls = new ArrayList<>();
+    ArrayList <Rectangle> eventRegions = new ArrayList<>();
 
     public GameMap(String path){
         map = new TmxMapLoader().load(path);
@@ -70,9 +71,26 @@ public class GameMap {
         }
     }
 
+    private void loadEventsLayer() {
+        MapLayer layer = map.getLayers().get("events");
+
+        for(RectangleMapObject object : layer.getObjects().getByType(RectangleMapObject.class) ){
+            Rectangle border = object.getRectangle();
+
+            eventRegions.add(new Rectangle(
+                    border.x/ tile_size,
+                    border.y/ tile_size,
+                    border.width / tile_size,
+                    border.height / tile_size)
+            );
+        }
+    }
+
     public ArrayList<Rectangle> getWalls(){
         return this.walls;
     }
+
+    public ArrayList<Rectangle> getEventRegions() { return this.eventRegions; }
 
     public Vector2 getPlayerSpawn() {
         return playerSpawn;

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.duckduckgoose.collision.CollisionHandler;
 import io.github.duckduckgoose.entities.Goose;
 import io.github.duckduckgoose.entities.Player;
+import io.github.duckduckgoose.events.EventsHandler;
 import io.github.duckduckgoose.items.AbstractItem;
 import io.github.duckduckgoose.items.BirdSeeds;
 import io.github.duckduckgoose.items.EnergyDrink;
@@ -39,7 +40,10 @@ public class Main extends ApplicationAdapter {
     Player player;
     ArrayList<Goose> geese = new ArrayList<>();
     ArrayList<AbstractItem> pickableItems = new ArrayList<>();
+
     CollisionHandler collisionHandler;
+    EventsHandler eventsHandler;
+
     Vector2 spawn;
     SpriteBatch batch;
 
@@ -121,7 +125,7 @@ public class Main extends ApplicationAdapter {
         // Instantiating geese
         geese.clear();
         for (int i = 0; i < GlobalVariables.geeseQuantity; i++) {
-            // Parameter order is : x, y#
+            // Parameter order is : x, y
             Vector2 gooseSpawn = randomGooseSpawn();
             geese.add(
                     new Goose(gooseSpawn.x, gooseSpawn.y)
@@ -139,6 +143,7 @@ public class Main extends ApplicationAdapter {
 
         // Once everythings been instantiated we can create a collision handler
         collisionHandler = new CollisionHandler(gameMap.getWalls(), geese, player, pickableItems);
+        eventsHandler = new EventsHandler(player.getDroppedSeeds(), gameMap.getEventRegions());
     }
 
     @Override
@@ -180,6 +185,7 @@ public class Main extends ApplicationAdapter {
             // Updates
             if (player.alive) {
                 collisionHandler.update();
+                eventsHandler.update(deltaTime);
                 player.update(deltaTime);
                 updateGeese();
                 updateItems();
