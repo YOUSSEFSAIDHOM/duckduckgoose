@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.duckduckgoose.collision.CollisionHandler;
 import io.github.duckduckgoose.entities.Goose;
 import io.github.duckduckgoose.entities.Player;
+import io.github.duckduckgoose.events.EventsHandler;
 import io.github.duckduckgoose.items.AbstractItem;
 import io.github.duckduckgoose.items.BirdSeeds;
 import io.github.duckduckgoose.items.EnergyDrink;
@@ -39,7 +40,10 @@ public class Main extends ApplicationAdapter {
     Player player;
     ArrayList<Goose> geese = new ArrayList<>();
     ArrayList<AbstractItem> pickableItems = new ArrayList<>();
+
     CollisionHandler collisionHandler;
+    EventsHandler eventsHandler;
+
     Vector2 spawn;
     SpriteBatch batch;
 
@@ -110,7 +114,7 @@ public class Main extends ApplicationAdapter {
 
         if (gameMap != null) {
             gameMap.dispose();
-        } gameMap = new GameMap(randomMap());
+        } gameMap = new GameMap(GlobalVariables.mapPath);
 
         spawn = gameMap.getPlayerSpawn();
         player = new Player(spawn.x, spawn.y);
@@ -121,7 +125,7 @@ public class Main extends ApplicationAdapter {
         // Instantiating geese
         geese.clear();
         for (int i = 0; i < GlobalVariables.geeseQuantity; i++) {
-            // Parameter order is : x, y#
+            // Parameter order is : x, y
             Vector2 gooseSpawn = randomGooseSpawn();
             geese.add(
                     new Goose(gooseSpawn.x, gooseSpawn.y)
@@ -139,6 +143,7 @@ public class Main extends ApplicationAdapter {
 
         // Once everythings been instantiated we can create a collision handler
         collisionHandler = new CollisionHandler(gameMap.getWalls(), geese, player, pickableItems);
+        eventsHandler = new EventsHandler(player.getDroppedSeeds(), gameMap.getGooseStampede(), gameMap.getStatue());
     }
 
     @Override
@@ -180,6 +185,7 @@ public class Main extends ApplicationAdapter {
             // Updates
             if (player.alive) {
                 collisionHandler.update();
+                eventsHandler.update(deltaTime);
                 player.update(deltaTime);
                 updateGeese();
                 updateItems();
@@ -250,10 +256,6 @@ public class Main extends ApplicationAdapter {
             seeds.update(deltaTime, player);
             seeds.draw(batch);
         }
-    }
-
-    public String randomMap() {
-        return GlobalVariables.mapList.get(random.nextInt(GlobalVariables.mapList.size()));
     }
 
     public Vector2 randomGooseSpawn() { return gameMap.getGeeseSpawn().get(random.nextInt(gameMap.getGeeseSpawn().size())); }

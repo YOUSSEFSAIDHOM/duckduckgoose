@@ -63,8 +63,10 @@ public class CollisionHandler {
             Vector2 pushVector = new Vector2();
 
             if (gooseA.checkEntityCollision(player)) {
+                if (gooseA.isChasing()) {
+                    player.decreaseHealth();
+                }
                 pushVector.add(CollisionUtils.push(gooseA, player));
-                player.decreaseHealth();
             }
 
             for (Rectangle wall : walls) {
@@ -81,6 +83,10 @@ public class CollisionHandler {
                     gooseA.setChasing(false);
                     droppedSeedIterator.remove();
                 }
+
+                // note for sergy
+                // make a check here to see if the duck boss gets fed.
+                // duckboss.increaseFeed count
             }
 
             for (Goose gooseB : geese) {

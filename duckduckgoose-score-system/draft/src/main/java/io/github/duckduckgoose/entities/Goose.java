@@ -29,6 +29,7 @@ public class Goose extends AbstractEntity {
     Color colour = new Color(Color.WHITE);
     boolean chasing = true;
 
+    public boolean isChasing() { return this.chasing; }
     public void setChasing(boolean chasing) {
         this.chasing = chasing;
     }
@@ -41,8 +42,8 @@ public class Goose extends AbstractEntity {
          * @param size is radius, entity collisions work by treating player/geese as circles
          */
         super(x, y);
-        this.bounds = new Rectangle(this.x, this.y, 0.3f, 0.3f);
         this.size = GlobalVariables.gooseRadius;
+        this.bounds = new Rectangle(x - size, y - size, 2 * size, 2 * size);
 
         if (gooseAnimation == null) {
             createAnimation();

@@ -25,6 +25,7 @@ public class GameMap {
 
 
     ArrayList <Rectangle> walls = new ArrayList<>();
+    Rectangle statue, gooseStampede;
 
     public GameMap(String path){
         map = new TmxMapLoader().load(path);
@@ -70,6 +71,15 @@ public class GameMap {
         }
     }
 
+    private void loadEventsLayer() {
+        MapObject object = map.getLayers().get("events").getObjects().get("gooseStampede");
+        Rectangle gooseStampede = ((RectangleMapObject) object ).getRectangle();
+
+        object = map.getLayers().get("events").getObjects().get("statue");
+        Rectangle statue = ((RectangleMapObject) object ).getRectangle();
+    }
+
+
     public ArrayList<Rectangle> getWalls(){
         return this.walls;
     }
@@ -80,6 +90,14 @@ public class GameMap {
 
     public ArrayList<Vector2> getGeeseSpawn() {
         return geeseSpawn;
+    }
+
+    public Rectangle getStatue() {
+        return statue;
+    }
+
+    public Rectangle getGooseStampede() {
+        return gooseStampede;
     }
 
     public float getWidth()  {
