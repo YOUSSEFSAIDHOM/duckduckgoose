@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="41088aac-eb4a-4f75-b1fc-049de4dd00e5" name="Changes" comment="Start menu GUI has been added to display the control and commence the game.">
+    <list default="true" id="41088aac-eb4a-4f75-b1fc-049de4dd00e5" name="Changes" comment="Score UI and addScore method created for easy allocation of points in future. Temporary point gainer added for testing.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/executionHistory/executionHistory.lock" afterDir="false" />
@@ -13,16 +13,14 @@
       <change beforePath="$PROJECT_DIR$/draft/.gradle/9.3.0/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/9.3.0/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/draft/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/GlobalVariables.class" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/GlobalVariables.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Main$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/classes/java/main/io/github/duckduckgoose/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/GlobalVariables.class.uniqueId3" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/GlobalVariables.class.uniqueId3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Goose.class.uniqueId0" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Goose.class.uniqueId0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/GlobalVariables.class.uniqueId3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Goose.class.uniqueId0" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Main$1.class.uniqueId2" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Main$1.class.uniqueId2" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Main.class.uniqueId1" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Main.class.uniqueId1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/compileTransaction/stash-dir/Player.class.uniqueId4" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/draft/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/draft/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/src/main/java/io/github/duckduckgoose/GlobalVariables.java" beforeDir="false" afterPath="$PROJECT_DIR$/draft/src/main/java/io/github/duckduckgoose/GlobalVariables.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/draft/src/main/java/io/github/duckduckgoose/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/draft/src/main/java/io/github/duckduckgoose/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,18 +83,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.draft [run].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;score-system&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/black/Eng1/duckduckgoose&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.draft [run].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "score-system",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/black/Eng1/duckduckgoose/draft/assets/ver_3/ui"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\black\Eng1\duckduckgoose\draft\assets\ver_3\ui" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="draft [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
@@ -158,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1794103706535</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Score UI and addScore method created for easy allocation of points in future. Temporary point gainer added for testing.">
+      <option name="closed" value="true" />
+      <created>1794237584781</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1794237584781</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -175,6 +186,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Problem report updated." />
     <MESSAGE value="Start menu GUI has been added to display the control and commence the game." />
-    <option name="LAST_COMMIT_MESSAGE" value="Start menu GUI has been added to display the control and commence the game." />
+    <MESSAGE value="Score UI and addScore method created for easy allocation of points in future. Temporary point gainer added for testing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Score UI and addScore method created for easy allocation of points in future. Temporary point gainer added for testing." />
   </component>
 </project>
