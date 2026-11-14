@@ -54,6 +54,10 @@ public class Main extends ApplicationAdapter {
     private Stage stage;
     private Skin skin;
     private boolean gameStarted = false;
+    private int score = 0;
+    private Label scoreLabel;
+    private float scoreCooldown = 0f;
+    private static final float SCORE_COOLDOWN_TIME = 0.5f;
 
     @Override
     public void create () {
@@ -105,13 +109,26 @@ public class Main extends ApplicationAdapter {
             }
         });
 
+        // Create the score counter
+
+        Table scoreTable = new Table();
+        scoreTable.setFillParent(true);
+        stage.addActor(scoreTable);
+
+        scoreLabel = new Label("Score: 0", skin);
+        scoreLabel.setFontScale(2);
+        scoreTable.add(scoreLabel).top().right().pad(20).expand();
+
         startGame();
     }
 
     public void startGame() {
+
+        // Reset score counter
+        score = 0;
+        scoreLabel.setText("Score: 0");
+
         // Parameter order is : x, y, size, health
-
-
         if (gameMap != null) {
             gameMap.dispose();
         } gameMap = new GameMap(GlobalVariables.mapPath);
@@ -156,6 +173,11 @@ public class Main extends ApplicationAdapter {
 
         deltaTime = Gdx.graphics.getDeltaTime();
 
+        // Create temporary cooldown for points (reuse for items)
+        if (scoreCooldown > 0) {
+            scoreCooldown -= deltaTime;
+        }
+
         // Updating Camera
         targetX = player.getX(); targetY = player.getY();
         // using linear interpolation to add some smooth factor to the trackinge = Gdx.graphics.getDeltaTime();
@@ -190,6 +212,12 @@ public class Main extends ApplicationAdapter {
                 updateGeese();
                 updateItems();
                 player.draw(batch);
+
+                // Temporary point allocation for item use
+                if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
+                    addScore(5);
+                }
+
             } else {
                 player.getHotbar().clearItems();
                 // Press space to restart game
@@ -259,4 +287,11 @@ public class Main extends ApplicationAdapter {
     }
 
     public Vector2 randomGooseSpawn() { return gameMap.getGeeseSpawn().get(random.nextInt(gameMap.getGeeseSpawn().size())); }
+
+    public void addScore(int points) {
+        if (scoreCooldown > 0) return;
+        score += points;
+        scoreLabel.setText("Score: " + score);
+        scoreCooldown = SCORE_COOLDOWN_TIME;
+    }
 }
