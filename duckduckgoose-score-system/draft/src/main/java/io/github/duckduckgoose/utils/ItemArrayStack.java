@@ -52,7 +52,7 @@ public class ItemArrayStack {
                 }
             }
         }
-        // If not, we add it to a null
+        // If not, we add it to a null slot in the hotbar
         for (int i = 0; i < items.length; i++) {
             if (items[i] == null) {
                 items[i] = new ItemStack(item, 1);
@@ -71,7 +71,7 @@ public class ItemArrayStack {
                 }
             }
         }
-        // If not, we add it to a null
+        // If not, we add it to a null slot in the hotbar
         for (int i = 0; i < items.length; i++) {
             if (items[i] == null) {
                 items[i] = itemStack;

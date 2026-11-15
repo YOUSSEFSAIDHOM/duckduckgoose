@@ -129,6 +129,9 @@ public class GameMap {
     // Creating depth in the game by rendering layers separately
 
     private void computeRenderOrder() {
+        /**
+         * Allows us to render layers above the player e.g buildings so the player can run behind them
+         */
         MapLayers layers = map.getLayers();
         int buildingsIndex = layers.getIndex("building");
         int treesIndex = layers.getIndex("trees");

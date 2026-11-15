@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.math.Rectangle;
 import io.github.duckduckgoose.entities.Goose;
 import io.github.duckduckgoose.items.BirdSeeds;
+import io.github.duckduckgoose.ui.GameHUD;
 import io.github.duckduckgoose.utils.GlobalVariables;
 
 public class EventsHandler {
@@ -16,48 +17,43 @@ public class EventsHandler {
 
     private GooseStampedeEvent gooseStampedeEvent;
     private SummonDuckEvent summonDuckEvent;
+    private AbstractEvent currentEvent;
+
+    // We'll need an instance of gameHud so that you can show the 3 second countdown before an event starts
+    private GameHUD gameHud;
 
     private int countdown = GlobalVariables.eventCountDown;
     private float stepTimer = 0f;
 
     public EventsHandler(ArrayList<BirdSeeds> droppedSeeds, ArrayList<Goose> geese,
-                         Rectangle gooseStampedeRect, Rectangle statueRect) {
+                         Rectangle gooseStampedeRect, Rectangle statueRect, GameHUD gameHud) {
         this.droppedSeeds = droppedSeeds;
         this.geese = geese;
         this.gooseStampedeRect = gooseStampedeRect;
         this.statueRect = statueRect;
+        this.gameHud = gameHud;
 
         this.gooseStampedeEvent = new GooseStampedeEvent(geese, gooseStampedeRect);
-        this.summonDuckEvent = new SummonDuckEvent();
+        this.summonDuckEvent = new SummonDuckEvent(geese, statueRect);
     }
 
     public void update(float delta) {
 
         if (!gooseStampedeEvent.isActivated() || !summonDuckEvent.isActivated()) {
-            AbstractEvent event = checkSeedInRegion();
 
-            if (event != null) {
-                eventCountDown(event, delta);
+            if (currentEvent != null && !currentEvent.isActivated()) {
+               // Start countdown and show the timer
+                if (!currentEvent.countDownFinished(delta)) {
+                    gameHud.showEventCountdown(currentEvent.getName() ,currentEvent.getCountdown());
+                } else {
+                    gameHud.hideEventCountdown();
+                }
+                return;
             }
+
+            currentEvent = checkSeedInRegion();
         }
-//        if (gooseStampedeActivated) {
-//            return;
-//        }
-//
-//        if (!countdownStarted) {
-//            if (seedInRegion()) {
-//                System.out.println("Event detected!!");
-//                countdownStarted = true;
-//            }
-//        } else {
-//            countdown -= delta;
-//
-//            if (countdown <= 0) {
-//                countdown = 0;
-//                gooseStampedeActivated = true;
-//                justStarted = true;
-//            }
-//        }
+        gameHud.hideEventCountdown();
     }
 
     private AbstractEvent checkSeedInRegion() {
@@ -67,25 +63,12 @@ public class EventsHandler {
         for (BirdSeeds seeds : droppedSeeds) {
 
             if (seeds.getBounds().overlaps(gooseStampedeRect) & !gooseStampedeEvent.isActivated()) {
-                return new GooseStampedeEvent(geese, gooseStampedeRect);
+                return gooseStampedeEvent;
             }
 
             if (seeds.getBounds().overlaps(statueRect) & !summonDuckEvent.isActivated()) {
-                System.out.println("not implemented yet sorry xoxox");
+                return summonDuckEvent;
             }
         } return null;
-    }
-
-    private void eventCountDown(AbstractEvent event, float delta) {
-        if (countdown > 0) {
-            stepTimer += delta;
-            if (stepTimer >= 1f) {
-                stepTimer = 0;
-                countdown--;
-            }
-        } else {
-            countdown = GlobalVariables.eventCountDown;
-            event.trigger();
-        }
     }
 }

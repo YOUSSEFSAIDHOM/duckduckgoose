@@ -33,10 +33,14 @@ public class GlobalVariables {
     public static final float lerpFactor = 0.05f; // The higher the lerp factor the faster the camera pans
     public static final int inventorySize = 5;
     public static final int geeseQuantity = 30;
+    public static final int gooseMaxFeed = 1;
+    public static final int duckMaxFeed = 12;
     public static final int eventCountDown = 3;
 
     public static final String mapPath = "ver_3/maps/campus_east.tmx";
     public static final Skin skin = new Skin(Gdx.files.internal("ver_3/ui/glassy-ui.json"));
+    public static final String gooseSheetPath = "ver_3/assets/sprites/goose_walk.png";
+    public static final String duckSheetPath = "ver_3/assets/sprites/duck_walk.png";
     // LibGdx has its own preferences module that allows you to save temp data like high scores for example
     public static final Preferences preferences = Gdx.app.getPreferences("duckduckgoose");
 

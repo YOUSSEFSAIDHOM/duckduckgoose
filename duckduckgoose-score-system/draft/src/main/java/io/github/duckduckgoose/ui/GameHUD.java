@@ -1,7 +1,5 @@
 package io.github.duckduckgoose.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -20,18 +18,23 @@ public class GameHUD {
     private final Stage stage;
     private final Skin skin;
 
+    // Tables
     private Table mainTable;
     private Table hotbarTable;
+    private Table eventCountdownTable;
+    private Table winTable;
+
+    //Labels
     private Label scoreLabel;
     private Label timerLabel;
+    private Label eventCountdownLabel;
+    private Label finalScoreLabel;
+    private Label winLabel;
 
     private int score = 0;
     private float scoreCooldown = 0f;
     private boolean gameStarted = false;
     private float timeRemaining = GlobalVariables.gameDuration;
-
-    private Table winTable;
-    private Label finalScoreLabel; // Shows once you fed all the geese
 
     public Stage getStage() { return stage; }
 
@@ -49,6 +52,7 @@ public class GameHUD {
         buildStartMenu();
         buildScore();
         buildTimer();
+        buildEventCountdown();
         buildWinScreen();
     }
 
@@ -57,7 +61,7 @@ public class GameHUD {
         mainTable.setFillParent(true);
         stage.addActor(mainTable);
 
-        Label movement_label = new Label("WASD movement controls", skin);
+        Label movement_label = new Label("WASD movement controls, Space to restart if you lose", skin);
         mainTable.add(movement_label).width(100).height(100).left().expand().padLeft(10);
         mainTable.row();
 
@@ -65,7 +69,7 @@ public class GameHUD {
         mainTable.add(items_label).width(100).height(100).left().expand().padLeft(10);
         mainTable.row();
 
-        Label restart_label = new Label("Press spacebar after you lose to restart", skin);
+        Label restart_label = new Label("Survive 5 minutes or feed all the geese to win, you may trigger hidden events to try and get extra points!!", skin);
         mainTable.add(restart_label).width(100).height(100).left().expand().padLeft(10);
         mainTable.row();
 
@@ -109,7 +113,7 @@ public class GameHUD {
         winTable.setVisible(false);
         stage.addActor(winTable);
 
-        Label winLabel = new Label("You fed all the geese!", skin);
+        winLabel = new Label("", skin);
         winLabel.setFontScale(2);
         winTable.add(winLabel).expand().row();
 
@@ -117,6 +121,30 @@ public class GameHUD {
         finalScoreLabel.setFontScale(2);
         winTable.add(finalScoreLabel).expand();
     }
+
+    // Event countdown
+
+    public void buildEventCountdown() {
+        eventCountdownTable = new Table();
+        eventCountdownTable.setFillParent(true);
+        eventCountdownTable.setVisible(false);
+        stage.addActor(eventCountdownTable);
+
+        eventCountdownLabel = new Label("", skin);
+        eventCountdownLabel.setFontScale(3);
+        eventCountdownTable.add(eventCountdownLabel).expand();
+    }
+
+    public void showEventCountdown(String eventName, int countdown) {
+        eventCountdownLabel.setText(eventName+" activating in " + countdown);
+        eventCountdownTable.setVisible(true);
+    }
+
+    public void hideEventCountdown() {
+        eventCountdownTable.setVisible(false);
+    }
+
+    // Score functionality
 
     public void addScore(int points) {
         if (scoreCooldown <= 0) {
@@ -132,7 +160,8 @@ public class GameHUD {
         }
     }
 
-    public void showFinalScore() {
+    public void showFinalScore(String message) {
+        winLabel.setText(message);
         // Your final score is your in game points + time remaining
         int finalScore = (int) (score + timeRemaining);
         // Default value of high score is 0 if its not found
@@ -170,9 +199,6 @@ public class GameHUD {
     }
 
     public void reset() {
-        /**
-         * @param hotbarTable is passed because per instance, a new hotbar needs to be created
-         */
         score = 0;
         scoreLabel.setText("Score: 0");
         timeRemaining = GlobalVariables.gameDuration;

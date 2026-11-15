@@ -96,7 +96,7 @@ public class Main extends ApplicationAdapter {
 
         // Initialise the items in the hotbar
         player.pickUpItem(new EnergyDrink(0,0));
-        player.pickUpStack(new ItemStack(new BirdSeeds(0,0), GlobalVariables.geeseQuantity + 20));
+        player.pickUpStack(new ItemStack(new BirdSeeds(0,0), GlobalVariables.geeseQuantity * 2 + 12));
 
         // Instantiating geese
         geese.clear();
@@ -114,12 +114,9 @@ public class Main extends ApplicationAdapter {
                 new EnergyDrink(itemSpawn.x, itemSpawn.y)
         );
 
-        // Testing
-
-
-        // Once everythings been instantiated we can create a collision handler
+        // Once everythings been instantiated we can create a collision handler and events handler
         collisionHandler = new CollisionHandler(gameMap.getWalls(), geese, player, pickableItems, gameHud);
-        eventsHandler = new EventsHandler(player.getDroppedSeeds(), geese, gameMap.getGooseStampede(), gameMap.getStatue());
+        eventsHandler = new EventsHandler(player.getDroppedSeeds(), geese, gameMap.getGooseStampede(), gameMap.getStatue(), gameHud);
     }
 
     @Override
@@ -164,13 +161,14 @@ public class Main extends ApplicationAdapter {
             if (player.alive) {
                 if (gameHud.tickTimer(deltaTime)) {
                     player.alive = false;
+                    gameHud.showFinalScore("You survived the geese!");
                 }
                 collisionHandler.update();
                 eventsHandler.update(deltaTime);
                 player.update(deltaTime);
                 updateItems();
-                updateGeese();
                 player.draw(batch);
+                updateGeese();
 
             } else {
                 player.getHotbar().clearItems();
@@ -192,7 +190,7 @@ public class Main extends ApplicationAdapter {
 
             if (checkWin()) {
                 player.alive = false;
-                gameHud.showFinalScore();
+                gameHud.showFinalScore("You fed all the geese!");
             }
         }
 
@@ -232,6 +230,9 @@ public class Main extends ApplicationAdapter {
     }
 
     public boolean checkWin() {
+        /**
+         * Returns true if all geese have been fed
+         */
         for (Goose goose : geese) {
             if (goose.isChasing()) {
                 return false;
@@ -255,7 +256,11 @@ public class Main extends ApplicationAdapter {
     }
 
     private void resetGame() {
+        /**
+         * Reset game ensures that the same player object can be reused per restart
+         */
         player.resetHealth();
+        player.getDroppedSeeds().clear();
         gameHud.reset();
         // have a position so this is one call (abstract entity)
         player.setX(spawn.x);

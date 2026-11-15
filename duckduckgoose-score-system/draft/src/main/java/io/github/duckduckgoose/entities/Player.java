@@ -68,7 +68,7 @@ public class Player extends AbstractEntity {
          * @param size is radius, entity collisions work by treating player/geese as circles
          */
         this.size = GlobalVariables.playerRadius;
-        this.bounds = new Rectangle(this.x - size, this.y + size, 0.5f, 0.5f);
+        this.bounds = new Rectangle(this.x - 1f / 2f, this.y - 2f / 2f, 2 * size, 2 * size);
 
         TextureRegion[][] frames = TextureRegion.split(playerSheet, 32, 64);
 

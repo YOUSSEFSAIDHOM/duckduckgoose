@@ -18,10 +18,12 @@ import java.util.ArrayList;
 
 public class Goose extends AbstractEntity {
     float speed = GlobalVariables.gooseSpeed;
+    int feedNum = GlobalVariables.gooseMaxFeed;
+    int points; // The number of points the player gets after feeding a goose
 
     // Goose animation
-    static Texture gooseSheet = new Texture("ver_3/assets/sprites/goose_walk.png");
-    static Animation<TextureRegion> gooseAnimation;
+    protected Texture animationSheet;
+    protected Animation<TextureRegion> gooseAnimation;
 
     private float animTime = 0f;
     private float xVelocity;
@@ -30,24 +32,30 @@ public class Goose extends AbstractEntity {
     boolean chasing = true;
 
     public boolean isChasing() { return this.chasing; }
+
     public void setChasing(boolean chasing) {
         this.chasing = chasing;
     }
 
+    protected String getAnimationPath() {
+        return GlobalVariables.gooseSheetPath;
+    }
+
+    public int getPoints() { return points; }
+
     public Goose(float x, float y) {
         /**
-         * Geese chase player and can deal supposed damage to the player
+       getDroppedSeeds  * Geese chase player and can deal supposed damage to the player
          *
          * @param speed how many pixels the goose covers per tick.
          * @param size is radius, entity collisions work by treating player/geese as circles
          */
         super(x, y);
         this.size = GlobalVariables.gooseRadius;
-        this.bounds = new Rectangle(x - size, y - size, 2 * size, 2 * size);
-
-        if (gooseAnimation == null) {
-            createAnimation();
-        }
+        this.animationSheet = new Texture(getAnimationPath());
+        this.points = 20;
+        this.bounds = new Rectangle(x - 1f / 2f, y - 2f / 2f, 2 * size, 2 * size);
+        createAnimation();
     }
 
     public void chaseTarget(float deltaTime, Vector2 target) {
@@ -70,6 +78,13 @@ public class Goose extends AbstractEntity {
 
         updateBounds();
         animTime += deltaTime;
+    }
+
+    public void eatSeeds() {
+        feedNum--;
+        if (feedNum == 0) {
+            chasing = false;
+        }
     }
 
     private Vector2 findNearestTarget(ArrayList<BirdSeeds> birdSeeds, Player player) {
@@ -134,9 +149,9 @@ public class Goose extends AbstractEntity {
         }
     }
 
-    private static void createAnimation() {
+    private void createAnimation() {
         TextureRegion[][] tmp =
-                TextureRegion.split(gooseSheet, 64, 64);
+                TextureRegion.split(animationSheet, 64, 64);
 
         Array<TextureRegion> frames = new Array<>();
 
