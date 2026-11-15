@@ -1,0 +1,136 @@
+@startuml
+class GameMap {
+    float tile_size
+    TiledMap map
+    OrthogonalTiledMapRenderer renderer
+    Vector2 playerSpawn
+    float width
+    float height
+    float getWidth()
+    float getHeight()
+    Rectangle[] getWalls()
+    void loadSpawn()
+    void loadBorders()
+    void getPlayerSpawn()
+    void render()
+    void dispose()
+
+}
+
+abstract AbstractEntity {
+  float x
+  float y
+  float size
+  float bounds
+  float getX()
+  float getY()
+  float getSize()
+  void setX()
+  void setY()
+  Rectangle getBounds()
+  bool checkWallCollision()
+  bool checkEntityCollision()
+}
+
+class Player {
+  float xVelocity
+  float yVelocity
+  float health
+  int speed
+  int sprintSpeed
+  int currentSpeed
+  bool alive
+  AbstractItem[] hotbar
+  AbstractItem currentItem
+  void update()
+  draw()
+  getHealth()
+  increaseHealth()
+  decreaseHealth()
+  pickUpItem()
+  holdItem()
+  useItem()
+}
+
+class Goose {
+  int speed
+  float distance
+  float dx
+  float dy
+  bool chasing
+  void chasePlayer()
+  void update()
+  void draw()
+}
+
+abstract AbstractItem {
+  bool equipped
+  void dispose()
+  void use()
+  void setEquipped()
+  void update()
+  void draw()
+}
+
+class EnergyDrink {
+  float efficacyDuration
+}
+
+class BirdSeeds {
+  float radiusOfEffect
+  int noOfGeeseAffected
+}
+
+class CollisionHandler {
+  Rectangle[] walls
+  Goose[] geese
+  Player player
+  void resolveWalls()
+  void resolveGeese()
+  void update()
+}
+
+
+class CollisionUtils {
+  void entityPush()
+  void wallPush
+}
+
+
+class PlayerAnimator {
+    void create() 
+    void resize() 
+    void render() 
+    void pause() 
+    void resume() 
+    void dispose() 
+}
+
+class GooseAnimator {
+    void create() 
+    void resize() 
+    void render() 
+    void pause() 
+    void resume() 
+    void dispose() 
+
+}
+
+Player --|> AbstractEntity : Extends
+Goose --|> AbstractEntity : Extends
+
+BirdSeeds --|> AbstractItem : Extends
+EnergyDrink --|> AbstractItem : Extends
+
+Player -- Goose : Interacts with
+Player -- EnergyDrink : Uses
+Player -- BirdSeeds : Uses
+
+Player --> PlayerAnimator : Animated by
+Goose --> GooseAnimator : Animated by
+
+CollisionHandler --> Player : Handles
+CollisionHandler --> Goose : Handles
+CollisionHandler -- CollisionUtils : Uses
+CollisionHandler -- GameMap : Uses
+@enduml
