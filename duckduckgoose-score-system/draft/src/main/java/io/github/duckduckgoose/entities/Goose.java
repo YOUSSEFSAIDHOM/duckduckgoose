@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 public class Goose extends AbstractEntity {
     float speed = GlobalVariables.gooseSpeed;
+    protected float drawSize = 2f;
 
     // Goose animation
     static Texture gooseSheet = new Texture("ver_3/assets/sprites/goose_walk.png");
@@ -32,6 +33,10 @@ public class Goose extends AbstractEntity {
     public boolean isChasing() { return this.chasing; }
     public void setChasing(boolean chasing) {
         this.chasing = chasing;
+    }
+
+    public void ateSeed() {
+        setChasing(false);
     }
 
     public Goose(float x, float y) {
@@ -103,8 +108,8 @@ public class Goose extends AbstractEntity {
     // Animations
 
     public void draw(SpriteBatch batch) {
-        float drawWidth = 2f;
-        float drawHeight = 2f;
+        float drawWidth = drawSize;
+        float drawHeight = drawSize;
 
         float drawX = bounds.x + bounds.width / 2 - drawWidth / 2;
         float drawY = bounds.y;
@@ -130,7 +135,7 @@ public class Goose extends AbstractEntity {
 
         else {
             // Dont flip
-            batch.draw(currentFrame, drawX, drawY, 2f, 2f);
+            batch.draw(currentFrame, drawX, drawY, drawSize, drawSize);
         }
     }
 

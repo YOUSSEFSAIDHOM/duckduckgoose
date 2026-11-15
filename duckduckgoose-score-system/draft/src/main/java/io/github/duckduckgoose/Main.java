@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import io.github.duckduckgoose.collision.CollisionHandler;
+import io.github.duckduckgoose.entities.DuckBoss;
 import io.github.duckduckgoose.entities.Goose;
 import io.github.duckduckgoose.entities.Player;
 import io.github.duckduckgoose.events.EventsHandler;
@@ -26,6 +27,7 @@ import io.github.duckduckgoose.utils.GlobalVariables;
 import io.github.duckduckgoose.utils.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class Main extends ApplicationAdapter {
@@ -228,6 +230,15 @@ public class Main extends ApplicationAdapter {
         for (Goose goose : geese) {
             goose.update(player, player.getDroppedSeeds(), deltaTime);
             goose.draw(batch);
+        }
+
+        Iterator<Goose> gooseIterator = geese.iterator();
+        while (gooseIterator.hasNext()) {
+            Goose goose = gooseIterator.next();
+            if (goose instanceof DuckBoss && ((DuckBoss) goose).isGone()) {
+                gameHud.addScore(GlobalVariables.duckBossScore);
+                gooseIterator.remove();
+            }
         }
     }
 

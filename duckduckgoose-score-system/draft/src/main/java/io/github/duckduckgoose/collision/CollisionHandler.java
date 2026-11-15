@@ -81,7 +81,7 @@ public class CollisionHandler {
             while (droppedSeedIterator.hasNext()) {
                 BirdSeeds seeds = droppedSeedIterator.next();
                 if (gooseA.checkItemCollision(seeds)) {
-                    gooseA.setChasing(false);
+                    gooseA.ateSeed();
                     droppedSeedIterator.remove();
                     // need a call to add score
                     gameHud.addScore(20);

@@ -2,10 +2,7 @@ package io.github.duckduckgoose.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-
-import java.util.List;
 
 public class GlobalVariables {
 
@@ -28,6 +25,14 @@ public class GlobalVariables {
 
     // Item stats
     public static final float energyDrinkDuration = 3f;
+
+    // Duck boss
+    public static final int duckBossSeedsNeeded = 12;
+    public static final float duckBossFadeTime = 1f;
+    public static final float duckBossRadius = 1.2f;
+    public static final float duckBossDrawSize = 6f;
+    public static final float duckBossSpeed = 4.8f;
+    public static final int duckBossScore = 250;
 
     // Misc...
     public static final float lerpFactor = 0.05f; // The higher the lerp factor the faster the camera pans
