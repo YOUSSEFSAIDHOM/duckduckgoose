@@ -12,6 +12,9 @@ import io.github.duckduckgoose.utils.GlobalVariables;
 
 import java.util.ArrayList;
 
+/**
+ * Abstract class to be adapted for various items
+ */
 public abstract class AbstractItem {
     protected float x, y;
     protected final float size = GlobalVariables.itemRadius;
@@ -36,6 +39,12 @@ public abstract class AbstractItem {
         this.collected = true;
     }
 
+    /**
+     * Constructor method for an abstract item
+     *
+     * @param x x co-ordinate of the item
+     * @param y y co-ordinate of the item
+     */
     public AbstractItem(float x, float y) {
         this.x = x;
         this.y = y;
@@ -47,6 +56,12 @@ public abstract class AbstractItem {
     public abstract void use(EffectsHandler effectsHandler, Player player);
     public abstract void draw(SpriteBatch batch);
 
+    /**
+     * check whether an item has been collected
+     *
+     * @param delta change in time
+     * @param player the player object
+     */
     public void update(float delta, Player player) {
         if (collected) {
             this.x = player.getX();
@@ -55,6 +70,9 @@ public abstract class AbstractItem {
         }
     }
 
+    /**
+     * Update the boundaries of the item
+     */
     public void updateBounds() {
         bounds.x = x - size;
         bounds.y = y + size;

@@ -4,6 +4,9 @@ import io.github.duckduckgoose.items.AbstractItem;
 
 import java.util.Arrays;
 
+/**
+ * Creates a stack which items for the hotbar are 'pushed to' and 'pulled from' accordingly
+ */
 public class ItemArrayStack {
     private ItemStack[] items;
     private int head;
@@ -34,6 +37,11 @@ public class ItemArrayStack {
         return getSize() == 0;
     }
 
+    /**
+     * Creates the basic structure of a stack
+     *
+     * @param arraySize the size of the array
+     */
     public ItemArrayStack(int arraySize) {
         this.items = new ItemStack[arraySize];
         this.head = 0;
@@ -61,6 +69,11 @@ public class ItemArrayStack {
         }
     }
 
+    /**
+     * Adds an item to the item stack.
+     *
+     * @param itemStack a specific stack item.
+     */
     public void addItemStack(ItemStack itemStack) {
         // First check if there is an item stack that already exists
         for (int i = 0; i < items.length; i++) {
@@ -80,6 +93,11 @@ public class ItemArrayStack {
         }
     }
 
+    /**
+     * Removes an item from the stack.
+     *
+     * @param index the hotbar position to remove.
+     */
     public void removeItem(int index) {
         items[index].removeItem();
         if (items[index].getCount() == 0) {
@@ -88,6 +106,9 @@ public class ItemArrayStack {
         size--;
     }
 
+    /**
+     * Clears all items from the stack.
+     */
     public void clearAll() {
         Arrays.fill(items, null);
     }

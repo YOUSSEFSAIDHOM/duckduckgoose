@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import java.util.List;
 
+/**
+ * Holds all the main variables for the game (essentially the game's setting variables)
+ */
 public class GlobalVariables {
 
     // Damage + Health stuff

@@ -11,6 +11,9 @@ import io.github.duckduckgoose.ui.GameHUD;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * Checks points of collision to determine specific interactions with the player/enemies/items
+ */
 public class CollisionHandler {
 
     ArrayList<Rectangle> walls;
@@ -19,6 +22,14 @@ public class CollisionHandler {
     Player player;
     GameHUD gameHud;
 
+    /**
+     * Constructor method for the collision handler
+     *
+     * @param walls array of all the wall collisions
+     * @param geese array of all the geese collisions
+     * @param player the player's collision
+     * @param pickableItems array of all the item collisions
+     */
     public CollisionHandler(ArrayList<Rectangle> walls, ArrayList<Goose> geese, Player player, ArrayList<AbstractItem> pickableItems, GameHUD gameHud) {
         this.walls = walls;
         this.geese = geese;
@@ -40,11 +51,11 @@ public class CollisionHandler {
         player.setY(player.getY() + pushVector.y);
     }
 
+    /**
+     * Checks if item is picked up and removes it from pickableItems
+     * Done with iterators
+     */
     public void resolveItems() {
-        /**
-         * Checks if item is picked up and removes it from pickableItems
-         * Done with iterators
-         */
         Iterator<AbstractItem> itemIterator = pickableItems.iterator();
         while(itemIterator.hasNext()) {
             AbstractItem item = itemIterator.next();
@@ -55,11 +66,10 @@ public class CollisionHandler {
         }
     }
 
+    /**
+     * Iterates through each goose and checks any collisions with player, walls, seeds or other geese.
+     */
     public void resolveGeese() {
-        /**
-         * Iterates through each goose and checks any collisions with player, walls, seeds or other geese.
-         */
-
         for (Goose gooseA : geese) {
             Vector2 pushVector = new Vector2();
 
@@ -101,6 +111,9 @@ public class CollisionHandler {
         }
     }
 
+    /**
+     * updates all checks for collision detection.
+     */
     public void update() {
         resolveGeese(); resolveWalls(); resolveItems();
     }

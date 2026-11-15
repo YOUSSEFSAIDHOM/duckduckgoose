@@ -28,6 +28,10 @@ import io.github.duckduckgoose.utils.ItemStack;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The main class for the game where it is run and rendered.
+ * Contains main gameplay mechanics and helpful UI.
+ */
 public class Main extends ApplicationAdapter {
     ShapeRenderer shape;
     GameMap gameMap;
@@ -56,12 +60,12 @@ public class Main extends ApplicationAdapter {
 
     public Vector2 randomGooseSpawn() { return gameMap.getGeeseSpawn().get(random.nextInt(gameMap.getGeeseSpawn().size())); }
 
+    /**
+     * The create function is part of the boilerplate for LibGDX projects.
+     * Anything that needs to be instantiated is here
+     */
     @Override
     public void create () {
-        /**
-         * The create function is part of the boiler plate for LibGDX projects.
-         * Anything that needs to be instantiated is here
-         */
 
         // Initialise the UI Camera
         uiCamera = new OrthographicCamera();
@@ -90,9 +94,12 @@ public class Main extends ApplicationAdapter {
         startGame();
     }
 
+    /**
+     * Establishes what happens once the player starts the game
+     */
     public void startGame() {
 
-        // Parameter order is : x, y, size, healt
+        // Parameter order is : x, y, size, health
 
         // Initialise the items in the hotbar
         player.pickUpItem(new EnergyDrink(0,0));
@@ -119,13 +126,12 @@ public class Main extends ApplicationAdapter {
         eventsHandler = new EventsHandler(player.getDroppedSeeds(), geese, gameMap.getGooseStampede(), gameMap.getStatue(), gameHud);
     }
 
+    /**
+     * The render function is part of the boilerplate as well,
+     * This acts as our game loop.
+     */
     @Override
     public void render () {
-        /**
-         * The render function is part of the boiler plate as well,
-         * This acts as our game loop.
-         */
-
 
         deltaTime = Gdx.graphics.getDeltaTime();
         gameHud.tickCooldown(deltaTime);
@@ -217,11 +223,19 @@ public class Main extends ApplicationAdapter {
 
     // Custom methods here
 
+    /**
+     * Displays the health bar at the top of the screen.
+     *
+     * @param shape the shape of the health bar
+     */
     public void displayHealthBar(ShapeRenderer shape) {
         shape.setColor(Color.RED);
         shape.rect(0, Gdx.graphics.getHeight()-20, player.getHealth(), 20);
     }
 
+    /**
+     * Updates the state of the geese based on player and seed positions
+     */
     public void updateGeese() {
         for (Goose goose : geese) {
             goose.update(player, player.getDroppedSeeds(), deltaTime);
@@ -229,10 +243,13 @@ public class Main extends ApplicationAdapter {
         }
     }
 
+    /**
+     * Checks whether all the geese have been fed.
+     *
+     * @return the state of whether all geese are fed
+     */
     public boolean checkWin() {
-        /**
-         * Returns true if all geese have been fed
-         */
+
         for (Goose goose : geese) {
             if (goose.isChasing()) {
                 return false;
@@ -240,10 +257,11 @@ public class Main extends ApplicationAdapter {
         } return true;
     }
 
+    /**
+     * Used to update items that can be picked up + bird seeds
+     */
     public void updateItems() {
-        /**
-         * Used to update items that can be picked up + bird seeds
-         */
+
         for (AbstractItem item : pickableItems) {
             item.update(deltaTime, player);
             item.draw(batch);
@@ -255,10 +273,11 @@ public class Main extends ApplicationAdapter {
         }
     }
 
+    /**
+     * Reset game ensures that the same player object can be reused per restart
+     */
     private void resetGame() {
-        /**
-         * Reset game ensures that the same player object can be reused per restart
-         */
+
         player.resetHealth();
         player.getDroppedSeeds().clear();
         gameHud.reset();

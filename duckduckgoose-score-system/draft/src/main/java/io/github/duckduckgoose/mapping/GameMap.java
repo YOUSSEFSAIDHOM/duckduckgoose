@@ -15,6 +15,10 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
+/**
+ * Creates the map and places entities and items within it.
+ * Also is responsible for the collisions and event detection.
+ */
 public class GameMap {
 
     private final float tile_size = 32f;
@@ -32,6 +36,11 @@ public class GameMap {
 
     Rectangle statue, gooseStampede;
 
+    /**
+     * Renders the map and gets the properties of the map.
+     *
+     * @param path the file path to a specific map layout
+     */
     public GameMap(String path){
         map = new TmxMapLoader().load(path);
         renderer = new OrthogonalTiledMapRenderer(map, 1/tile_size);
@@ -47,6 +56,9 @@ public class GameMap {
         loadEventsLayer();
     }
 
+    /**
+     * Loads where on the map the player should spawn
+     */
     private void loadPlayerSpawn() {
         MapObject object = map.getLayers().get("playerSpawn").getObjects().get("player");
         Rectangle spawn = ((RectangleMapObject) object ).getRectangle();
@@ -54,6 +66,9 @@ public class GameMap {
 
     }
 
+    /**
+     * Loads where on the map the geese should spawn
+     */
     private void loadGeeseSpawn() {
         MapLayer geeseLayer = map.getLayers().get("geeseSpawn");
 
@@ -63,6 +78,9 @@ public class GameMap {
         }
     }
 
+    /**
+     * Loads the borders of the map so they have collision
+     */
     private void loadBorders(){
         MapLayer layer = map.getLayers().get("collisions");
 
@@ -78,6 +96,9 @@ public class GameMap {
         }
     }
 
+    /**
+     * Loads the areas on the map where hidden events can be triggered.
+     */
     private void loadEventsLayer() {
         MapObject object = map.getLayers().get("events").getObjects().get("gooseStampede");
         Rectangle temp = ((RectangleMapObject) object ).getRectangle();
@@ -128,10 +149,11 @@ public class GameMap {
 
     // Creating depth in the game by rendering layers separately
 
+    /**
+     * Allows us to render layers above the player e.g buildings so the player can run behind them
+     */
     private void computeRenderOrder() {
-        /**
-         * Allows us to render layers above the player e.g buildings so the player can run behind them
-         */
+
         MapLayers layers = map.getLayers();
         int buildingsIndex = layers.getIndex("building");
         int treesIndex = layers.getIndex("trees");

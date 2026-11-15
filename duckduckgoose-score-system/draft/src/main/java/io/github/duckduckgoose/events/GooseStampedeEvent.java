@@ -7,19 +7,28 @@ import io.github.duckduckgoose.utils.GlobalVariables;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Creates an event to summon a stampede of geese.
+ */
 public class GooseStampedeEvent extends AbstractEvent{
     ArrayList<Goose> geese;
     Rectangle gooseStampedeSpawn;
 
+    /**
+     * Activated once the seeds are dropped at far north area of the map.
+     *
+     * @param geese array of all active geese
+     * @param gooseStampedeSpawn area where the stampede of geese spawn from
+     */
     public GooseStampedeEvent(ArrayList<Goose> geese, Rectangle gooseStampedeSpawn) {
-        /**
-         * Activated once the seeds are dropped at far noth area of the map
-         */
         this.geese = geese;
         this.gooseStampedeSpawn = gooseStampedeSpawn;
         this.eventName = "Goose stampede";
     }
 
+    /**
+     * Establishes how the event should be triggered + how many geese to spawn.
+     */
     @Override
     void trigger() {
         // Spawns twice as many geese in the region

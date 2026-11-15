@@ -11,6 +11,9 @@ import io.github.duckduckgoose.utils.ItemStack;
 import io.github.duckduckgoose.utils.GlobalVariables;
 import io.github.duckduckgoose.utils.ItemArrayStack;
 
+/**
+ * Contains all methods for drawing the hotbar and giving the item hotbar functionality
+ */
 public class Hotbar {
     ItemArrayStack itemArray;
     Table table;
@@ -49,6 +52,11 @@ public class Hotbar {
         itemArray.removeItem(index); update();
     }
 
+    /**
+     * Constructor method for the hotbar.
+     *
+     * @param size value for how large the hotbar should be
+     */
     public Hotbar(int size) {
         this.size = size;
         this.skin = GlobalVariables.skin;
@@ -79,6 +87,9 @@ public class Hotbar {
         }
     }
 
+    /**
+     * Update the hotbar to display the correct items and sprites currently held by the player.
+     */
     public void update() {
         for (int i = 0; i < size; i++) {
             slots[i].clearChildren();
@@ -100,6 +111,13 @@ public class Hotbar {
         }
     }
 
+    /**
+     * Draws each of the slots of the hotbar
+     *
+     * @param backgroundColour the background colour for the hotbar slots
+     * @param borderColour the border colour for the hotbar slots
+     * @return the slot to be drawn
+     */
     private TextureRegionDrawable makeSlotDrawable(Color backgroundColour, Color borderColour) {
         int size = 64; // GlobalVariables?
         // Parameter order is width height and colour
@@ -122,6 +140,9 @@ public class Hotbar {
 
     }
 
+    /**
+     * Removes all items from the hotbar.
+     */
     public void clearItems() {
         itemArray.clearAll();
         update();

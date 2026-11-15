@@ -19,6 +19,9 @@ import io.github.duckduckgoose.items.AbstractItem;
 
 import java.util.ArrayList;
 
+/**
+ * Establish the Player entity, it's characteristics and methods
+ */
 public class Player extends AbstractEntity {
     // Core movement variables
     float xVelocity = 0;
@@ -53,20 +56,23 @@ public class Player extends AbstractEntity {
 
     public ArrayList<BirdSeeds> getDroppedSeeds() { return droppedSeeds; }
 
+    /**
+     * Drops a seed on the map
+     *
+     * @param seeds A specific seed object
+     */
     public void dropSeed(BirdSeeds seeds) {
         droppedSeeds.add(seeds);
     }
 
+    /**
+     * Establishes the player's positioning and animations
+     *
+     * @param x x co-ordinate of the player
+     * @param y y co-ordinate of the player
+     */
     public Player(float x, float y) {
         super(x, y);
-        /**
-         * Player is able to move around, with W, A, S, D keys and use items,
-         * specify its x and y to indicate starting position
-         *
-         * @param speed is the regular speed at which the player runs at
-         * @param sprintSpeed when left shift is held down you can change the speed to this
-         * @param size is radius, entity collisions work by treating player/geese as circles
-         */
         this.size = GlobalVariables.playerRadius;
         this.bounds = new Rectangle(this.x - 1f / 2f, this.y - 2f / 2f, 2 * size, 2 * size);
 
@@ -92,6 +98,11 @@ public class Player extends AbstractEntity {
         }
     }
 
+    /**
+     * Update the player's state with the hotbar, item usage and movement
+     *
+     * @param deltaTime time between frames rendering
+     */
     public void update(float deltaTime) {
 
         // First check the player is still alive
@@ -171,6 +182,11 @@ public class Player extends AbstractEntity {
         updateBounds();
     }
 
+    /**
+     * Draw the specific sprite/animation depending on the player direction
+     *
+     * @param batch method for drawing sprites
+     */
     public void draw(SpriteBatch batch) {
         float drawX = bounds.x; // + bounds.width / 2 - 0.5f;
         float drawY = bounds.y; // + bounds.height / 2 - 0.5f;
@@ -210,8 +226,12 @@ public class Player extends AbstractEntity {
 
     // Item management
 
+    /**
+     * Controlling the hotbar with numbers 1-5 and returns an index to set currentItem with.
+     *
+     * @return the index value for the hotbar
+     */
     private int getKeyNumber() {
-        // Controlling the hotbar with numbers 1-5 and returns an index to set currentItem with
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)) return 0;
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)) return 1;
         if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)) return 2;
@@ -224,14 +244,25 @@ public class Player extends AbstractEntity {
         hotbar.addItem(item);
     }
 
-    // Makes the operation of adding a lot of items a lot cleaner
+    /**
+     * Makes the operation of adding a lot of items a lot cleaner.
+     *
+     * @param itemStack stack containing all the items in the hotbar
+     */
     public void pickUpStack(ItemStack itemStack) { hotbar.addItemStack(itemStack); }
 
+    /**
+     * Use number system and set currentItem to one of hotbar.
+     *
+     * @param index index of item on the stack
+     */
     private void holdItem(int index) {
-        // use number system and set currentItem to one of hotbar
         currentItem = hotbar.getItem(index);
     }
 
+    /**
+     * Uses up the item the player has selected and removes it from the hotbar.
+     */
     private void useItem() {
         if (currentItem != null) {
             currentItem.use(effectsHandler, this);

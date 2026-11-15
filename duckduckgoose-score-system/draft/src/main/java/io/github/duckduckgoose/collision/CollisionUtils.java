@@ -6,9 +6,18 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.duckduckgoose.entities.AbstractEntity;
 import io.github.duckduckgoose.entities.Player;
 
+/**
+ * Utility methods to help establish collisions.
+ */
 public class CollisionUtils {
 
-
+    /**
+     * Establish the behaviour of two entities when they collide with each other
+     *
+     * @param entityA general entity, could be player, goose or item
+     * @param entityB general entity, could be player, goose or item
+     * @return vector to determine where the entities should be after the collision
+     */
     public static Vector2 push(AbstractEntity entityA, AbstractEntity entityB) {
         // Uses circle as bounds so it looks smoother
         float ox = entityA.getX() - entityB.getX();
@@ -22,6 +31,13 @@ public class CollisionUtils {
 
     }
 
+    /**
+     * Establish how the player interacts after colliding with the outer walls of the map
+     *
+     * @param player the player object and collision
+     * @param wall the wall's collision area
+     * @return a vector of where to push the player based on the wall position
+     */
     public static Vector2 wallPush(AbstractEntity player, Rectangle wall) {
         Rectangle playerBounds = player.getBounds();
 

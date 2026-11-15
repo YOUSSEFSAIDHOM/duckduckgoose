@@ -2,6 +2,9 @@ package io.github.duckduckgoose.events;
 
 import io.github.duckduckgoose.utils.GlobalVariables;
 
+/**
+ * Abstract class to be adapted for the different hidden events.
+ */
 public abstract class AbstractEvent {
     public boolean activated;
     public String eventName;
@@ -23,12 +26,13 @@ public abstract class AbstractEvent {
         return eventName;
     }
 
+    /**
+     * Creates a countdown before the event itself is triggered.
+     * @param delta is used to reference in-game delta time the countdown is accurate to gameplay.
+     * @return true once the event has been triggered
+     */
     public boolean countDownFinished(float delta) {
-        /**
-         * Creates a count down before the event itself is triggerred.
-         * @param delta is used to reference in-game delta time the countdown is accurate to gameplay.
-         * @returns true once the event has been triggerred
-         */
+
 
         if (countdown > 0) {
             stepTimer += delta;
@@ -36,7 +40,7 @@ public abstract class AbstractEvent {
                 stepTimer -= 1f;
                 countdown--;
             }
-            return false; // Because event hasn't been triggerred yet
+            return false; // Because event hasn't been triggered yet
         }
         // Now count down is 0 so we can trigger the event and return true
         trigger();

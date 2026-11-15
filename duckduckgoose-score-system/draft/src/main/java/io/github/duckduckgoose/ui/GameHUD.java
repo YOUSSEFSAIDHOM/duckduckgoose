@@ -9,11 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import io.github.duckduckgoose.utils.GlobalVariables;
 
+/**
+ * Takes care of all things HUD related in the game
+ */
 public class GameHUD {
-    /**
-     * Takes care of all things HUD related in the game
-     *
-     */
 
     private final Stage stage;
     private final Skin skin;
@@ -40,12 +39,18 @@ public class GameHUD {
 
     public boolean isGameStarted() { return gameStarted; }
 
+    /**
+     * Constructor for the main HUD for the game.
+     *
+     * @param stage where all the UI elements are placed upon
+     * @param hotbarTable the table used to lay out the hotbar UI
+     */
     public GameHUD(Stage stage, Table hotbarTable) {
         this.stage = stage;
         this.hotbarTable = hotbarTable;
         this.skin = GlobalVariables.skin;
 
-        // Adding the hotbar, set the visibility intially to false so it doesn't overlap the start button
+        // Adding the hotbar, set the visibility initially to false so it doesn't overlap the start button
         this.hotbarTable.setVisible(gameStarted);
         this.stage.addActor(hotbarTable);
 
@@ -56,6 +61,9 @@ public class GameHUD {
         buildWinScreen();
     }
 
+    /**
+     * Creates the start menu UI (explains controls and has the 'start' button).
+     */
     private void buildStartMenu() {
         mainTable = new Table();
         mainTable.setFillParent(true);
@@ -86,6 +94,9 @@ public class GameHUD {
         });
     }
 
+    /**
+     * Creates the UI for the score display in-game.
+     */
     private void buildScore() {
         Table scoreTable = new Table();
         scoreTable.setFillParent(true);
@@ -96,6 +107,9 @@ public class GameHUD {
         scoreTable.add(scoreLabel).top().right().pad(20).expand();
     }
 
+    /**
+     * Creates the UI for the timer display in-game.
+     */
     private void buildTimer() {
         Table timerTable = new Table();
         timerTable.setFillParent(true);
@@ -107,6 +121,9 @@ public class GameHUD {
         timerTable.add(timerLabel).top().pad(20).expand();
     }
 
+    /**
+     * Creates the UI for the win screen for when the timer runs out.
+     */
     private void buildWinScreen() {
         winTable = new Table();
         winTable.setFillParent(true);
@@ -124,6 +141,9 @@ public class GameHUD {
 
     // Event countdown
 
+    /**
+     * Creates the UI for a countdown before a hidden event begins.
+     */
     public void buildEventCountdown() {
         eventCountdownTable = new Table();
         eventCountdownTable.setFillParent(true);
@@ -135,17 +155,31 @@ public class GameHUD {
         eventCountdownTable.add(eventCountdownLabel).expand();
     }
 
+    /**
+     * Displays the event countdown once hidden trigger is active.
+     *
+     * @param eventName the event that has been triggered
+     * @param countdown the time to countdown from
+     */
     public void showEventCountdown(String eventName, int countdown) {
         eventCountdownLabel.setText(eventName+" activating in " + countdown);
         eventCountdownTable.setVisible(true);
     }
 
+    /**
+     * Hides the event timer once it's at 0.
+     */
     public void hideEventCountdown() {
         eventCountdownTable.setVisible(false);
     }
 
     // Score functionality
 
+    /**
+     * Adds points to the player's total score.
+     *
+     * @param points the number of points to add to the score
+     */
     public void addScore(int points) {
         if (scoreCooldown <= 0) {
             score += points;
@@ -154,17 +188,27 @@ public class GameHUD {
         }
     }
 
+    /**
+     * Cooldown for score allocation to prevent rapid increases.
+     *
+     * @param delta difference in time between frames
+     */
     public void tickCooldown(float delta) {
         if (scoreCooldown > 0) {
             scoreCooldown -= delta;
         }
     }
 
+    /**
+     * Displays the final score that the player has achieved.
+     *
+     * @param message a formatted string message to be display the score
+     */
     public void showFinalScore(String message) {
         winLabel.setText(message);
         // Your final score is your in game points + time remaining
         int finalScore = (int) (score + timeRemaining);
-        // Default value of high score is 0 if its not found
+        // Default value of high score is 0 if it's not found
         int highScore = GlobalVariables.preferences.getInteger("highscore", 0);
 
         if (finalScore > highScore) {
@@ -175,11 +219,13 @@ public class GameHUD {
         winTable.setVisible(true);
     }
 
+    /**
+     * Only ticks time if it is above 0, and returns true if time remaining is finished.
+     *
+     * @param delta time difference between frames
+     * @return determines whether time remaining is 0 or not
+     */
     public boolean tickTimer(float delta) {
-        /**
-         * Only ticks time if it is above 0,
-         * and returns true if time remaining is finished
-         */
         if (timeRemaining <= 0) {
             return true;
         }
@@ -188,6 +234,9 @@ public class GameHUD {
         return timeRemaining == 0;
     }
 
+    /**
+     * Updates the timer to keep counting down.
+     */
     private void updateTimerLabel() {
         int minutes = (int) timeRemaining / 60;
         int seconds = (int) timeRemaining % 60;
@@ -198,6 +247,9 @@ public class GameHUD {
         skin.dispose();
     }
 
+    /**
+     * Resets the timer and score display once the game restarts.
+     */
     public void reset() {
         score = 0;
         scoreLabel.setText("Score: 0");
