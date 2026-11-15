@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import io.github.duckduckgoose.effects.EffectsHandler;
 import io.github.duckduckgoose.items.BirdSeeds;
+import io.github.duckduckgoose.utils.ItemStack;
 import io.github.duckduckgoose.ui.Hotbar;
 import io.github.duckduckgoose.utils.GlobalVariables;
 import io.github.duckduckgoose.items.AbstractItem;
@@ -202,6 +203,11 @@ public class Player extends AbstractEntity {
         this.health++;
     }
 
+    public void resetHealth() {
+        this.health = GlobalVariables.playerHealth;
+        this.alive = true;
+    }
+
     // Item management
 
     private int getKeyNumber() {
@@ -217,6 +223,9 @@ public class Player extends AbstractEntity {
     public void pickUpItem(AbstractItem item) {
         hotbar.addItem(item);
     }
+
+    // Makes the operation of adding a lot of items a lot cleaner
+    public void pickUpStack(ItemStack itemStack) { hotbar.addItemStack(itemStack); }
 
     private void holdItem(int index) {
         // use number system and set currentItem to one of hotbar

@@ -1,15 +1,13 @@
 package io.github.duckduckgoose.collision;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import io.github.duckduckgoose.entities.AbstractEntity;
-import io.github.duckduckgoose.entities.Player;
 
 public class CollisionUtils {
 
 
-    public static Vector2 push(AbstractEntity entityA, AbstractEntity entityB) {
+    public static Vector2 entityPush(AbstractEntity entityA, AbstractEntity entityB) {
         // Uses circle as bounds so it looks smoother
         float ox = entityA.getX() - entityB.getX();
         float oy = entityA.getY() - entityB.getY();

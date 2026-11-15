@@ -381,8 +381,8 @@
   <object id="121" x="267.5" y="134.5" width="39" height="52"/>
  </objectgroup>
  <objectgroup id="8" name="spawn">
-  <object id="37" name="player" x="480" y="290.182" width="32" height="31.8182"/>
-  <object id="51" name="geese" x="296.667" y="394.667"/>
+  <object id="37" name="player" x="480.5" y="287.682" width="32" height="31.8182"/>
+  <object id="51" name="geese" x="297.667" y="390.167"/>
   <object id="52" name="geese" x="810.667" y="269.333"/>
   <object id="53" name="geese" x="458.667" y="437.333"/>
  </objectgroup>

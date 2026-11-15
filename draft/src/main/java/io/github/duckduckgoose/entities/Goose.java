@@ -18,13 +18,12 @@ import java.util.List;
 
 public class Goose extends AbstractEntity {
     float speed = GlobalVariables.gooseSpeed;
-    float distance, targetX, targetY, dx, dy;
+    float distance, dx, dy;
 
     // Temp
-    Texture playerSheet = new Texture("ver_3/assets/Farmer_1_32x32.png");
+    Texture playerSheet = new Texture("ver_3/assets/Duck_White_32x32.png");
     TextureRegion idlePlayer = new TextureRegion(playerSheet,96,0,32,64);
 
-    Color colour = new Color(Color.WHITE);
     boolean chasing = true;
 
     public Goose(float x, float y) {
@@ -35,12 +34,11 @@ public class Goose extends AbstractEntity {
          * @param size is radius, entity collisions work by treating player/geese as circles
          */
         this.x = x; this.y = y;
-        this.targetX = x; this.targetY = y;
         this.bounds = new Rectangle(this.x, this.y, 0.3f, 0.3f);
         this.size = GlobalVariables.gooseRadius;
     }
 
-    public void chasePlayer(float deltaTime) {
+    private void chasePlayer(float deltaTime) {
         if (distance > 1) {
             x += (dx / distance) * speed * deltaTime;
             y += (dy / distance) * speed * deltaTime;

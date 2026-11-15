@@ -11,7 +11,7 @@ public class GlobalVariables {
     public static final float playerRadius = 0.5f;
     public static final float gooseRadius = 0.5f;
 
-    public static final int gooseSpeed = 8;
+    public static final int gooseSpeed = 5;
     public static final int playerSpeed = 9;
     public static final int playerSprintSpeed = 12;
 

@@ -3,7 +3,7 @@ package io.github.duckduckgoose.entities;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 
-public class AbstractEntity {
+public abstract class AbstractEntity {
     float x; float y; float size;
     Rectangle bounds;
 

@@ -24,7 +24,7 @@ public class AbstractEntity {
 
     public void updateBounds() {
         bounds.x = x - size;
-        bounds.y = y + size;
+        bounds.y = y - size;
     }
 
     public AbstractEntity(float x, float y) {

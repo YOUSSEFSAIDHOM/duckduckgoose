@@ -5,7 +5,7 @@ import io.github.duckduckgoose.items.AbstractItem;
 import java.util.Arrays;
 
 public class ItemArrayStack {
-    private AbstractItem[] items;
+    private ItemStack[] items;
     private int head;
     private int tail;
     private int size;
@@ -14,36 +14,78 @@ public class ItemArrayStack {
         return size;
     }
 
+    public AbstractItem getItem(int index) {
+        if (index < items.length && index >= 0) {
+            if (items[index] != null) {
+                return items[index].getItem();
+            }
+        } return null;
+    }
+
+    public int getCount(int index) {
+        if (index < items.length && index >= 0) {
+            if (items[index] != null) {
+                return items[index].getCount();
+            }
+        } return 0;
+    }
+
     public boolean isEmpty() {
         return getSize() == 0;
     }
 
     public ItemArrayStack(int arraySize) {
-        this.items = new AbstractItem[arraySize];
+        this.items = new ItemStack[arraySize];
         this.head = 0;
         this.tail = 0;
         this.size = 0;
     }
 
     public void addItem(AbstractItem item) {
+
+        // First check if there is an item stack that already exists
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                if (item.getName().equals(items[i].getItemName())) {
+                    items[i].addItem(1);
+                    return;
+                }
+            }
+        }
+        // If not, we add it to a null
         for (int i = 0; i < items.length; i++) {
             if (items[i] == null) {
-                items[i] = item;
-                size++;
+                items[i] = new ItemStack(item, 1);
+                return;
+            }
+        }
+    }
+
+    public void addItemStack(ItemStack itemStack) {
+        // First check if there is an item stack that already exists
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                if (itemStack.getItemName().equals(items[i].getItemName())) {
+                    items[i].addItem(itemStack.getCount());
+                    return;
+                }
+            }
+        }
+        // If not, we add it to a null
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] == null) {
+                items[i] = itemStack;
                 return;
             }
         }
     }
 
     public void removeItem(int index) {
-        items[index] = null;
+        items[index].removeItem();
+        if (items[index].getCount() == 0) {
+            items[index] = null;
+        }
         size--;
-    }
-
-    public AbstractItem getItem(int index) {
-        if (index < items.length && index >= 0) {
-            return items[index];
-        } return null;
     }
 
     public void clearAll() {

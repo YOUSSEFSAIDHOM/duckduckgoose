@@ -10,6 +10,8 @@ import io.github.duckduckgoose.entities.Player;
 import io.github.duckduckgoose.utils.GlobalVariables;
 
 public class BirdSeeds extends AbstractItem {
+
+    // Bird seeds has 2 textures one which is a bag and one which is just
     public static final Texture texture = new Texture("ver_3/assets/items/birdSeeds.png");
     public static final TextureRegion textureRegion = new TextureRegion(texture);
 

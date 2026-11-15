@@ -1,13 +1,12 @@
 package io.github.duckduckgoose.collision;
 
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import io.github.duckduckgoose.effects.AbstractEffect;
 import io.github.duckduckgoose.entities.Goose;
 import io.github.duckduckgoose.entities.Player;
 import io.github.duckduckgoose.items.AbstractItem;
 import io.github.duckduckgoose.items.BirdSeeds;
+import io.github.duckduckgoose.ui.GameHUD;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,12 +17,14 @@ public class CollisionHandler {
     ArrayList<Goose> geese;
     ArrayList<AbstractItem> pickableItems;
     Player player;
+    GameHUD gameHud;
 
-    public CollisionHandler(ArrayList<Rectangle> walls, ArrayList<Goose> geese, Player player, ArrayList<AbstractItem> pickableItems) {
+    public CollisionHandler(ArrayList<Rectangle> walls, ArrayList<Goose> geese, Player player, ArrayList<AbstractItem> pickableItems, GameHUD gameHud) {
         this.walls = walls;
         this.geese = geese;
         this.player = player;
         this.pickableItems = pickableItems;
+        this.gameHud = gameHud;
     }
 
     public void resolveWalls() {
@@ -82,6 +83,8 @@ public class CollisionHandler {
                 if (gooseA.checkItemCollision(seeds)) {
                     gooseA.setChasing(false);
                     droppedSeedIterator.remove();
+                    // need a call to add score
+                    gameHud.addScore(20);
                 }
 
                 // note for sergy

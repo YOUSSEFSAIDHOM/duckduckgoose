@@ -2,83 +2,90 @@ package io.github.duckduckgoose.events;
 
 import java.util.ArrayList;
 import com.badlogic.gdx.math.Rectangle;
+import io.github.duckduckgoose.entities.Goose;
 import io.github.duckduckgoose.items.BirdSeeds;
+import io.github.duckduckgoose.utils.GlobalVariables;
 
 public class EventsHandler {
 
     private final ArrayList<BirdSeeds> droppedSeeds;
+    private final ArrayList<Goose> geese;
 
-    private final Rectangle gooseStampede;
-    private final Rectangle statue;
+    private final Rectangle gooseStampedeRect;
+    private final Rectangle statueRect;
 
-    private boolean countdownStarted = false;
-    private boolean gooseStampedeActive = false;
-    private boolean justStarted = false;
+    private GooseStampedeEvent gooseStampedeEvent;
+    private SummonDuckEvent summonDuckEvent;
 
-    private float countdown = 3f;
+    private int countdown = GlobalVariables.eventCountDown;
+    private float stepTimer = 0f;
 
-    public EventsHandler(ArrayList<BirdSeeds> droppedSeeds,
-                         Rectangle gooseStampede, Rectangle statue) {
+    public EventsHandler(ArrayList<BirdSeeds> droppedSeeds, ArrayList<Goose> geese,
+                         Rectangle gooseStampedeRect, Rectangle statueRect) {
         this.droppedSeeds = droppedSeeds;
-        this.gooseStampede = gooseStampede;
-        this.statue = statue;
+        this.geese = geese;
+        this.gooseStampedeRect = gooseStampedeRect;
+        this.statueRect = statueRect;
+
+        this.gooseStampedeEvent = new GooseStampedeEvent(geese, gooseStampedeRect);
+        this.summonDuckEvent = new SummonDuckEvent();
     }
 
     public void update(float delta) {
 
-        if (gooseStampedeActive) {
-            return;
-        }
+        if (!gooseStampedeEvent.isActivated() || !summonDuckEvent.isActivated()) {
+            AbstractEvent event = checkSeedInRegion();
 
-        if (!countdownStarted) {
-            if (seedInRegion()) {
-                System.out.println("Event detected!!");
-                countdownStarted = true;
-            }
-        } else {
-            countdown -= delta;
-
-            if (countdown <= 0) {
-                countdown = 0;
-                gooseStampedeActive = true;
-                justStarted = true;
+            if (event != null) {
+                eventCountDown(event, delta);
             }
         }
+//        if (gooseStampedeActivated) {
+//            return;
+//        }
+//
+//        if (!countdownStarted) {
+//            if (seedInRegion()) {
+//                System.out.println("Event detected!!");
+//                countdownStarted = true;
+//            }
+//        } else {
+//            countdown -= delta;
+//
+//            if (countdown <= 0) {
+//                countdown = 0;
+//                gooseStampedeActivated = true;
+//                justStarted = true;
+//            }
+//        }
     }
 
-    private boolean seedInRegion() {
+    private AbstractEvent checkSeedInRegion() {
         /**
          * Checks for seeds in the events region layer in the map
          */
-
         for (BirdSeeds seeds : droppedSeeds) {
 
-            if (seeds.getBounds().overlaps(gooseStampede)) {
-                return true;
+            if (seeds.getBounds().overlaps(gooseStampedeRect) & !gooseStampedeEvent.isActivated()) {
+                return new GooseStampedeEvent(geese, gooseStampedeRect);
             }
-        }
 
-        return false;
+            if (seeds.getBounds().overlaps(statueRect) & !summonDuckEvent.isActivated()) {
+                System.out.println("not implemented yet sorry xoxox");
+            }
+        } return null;
     }
 
-    public boolean isGooseStampedeActive() {
-        return gooseStampedeActive;
-    }
-
-    public boolean hasJustStarted() {
-        if (justStarted) {
-            justStarted = false;
-            return true;
+    private void eventCountDown(AbstractEvent event, float delta) {
+        if (countdown > 0) {
+            stepTimer += delta;
+            if (stepTimer >= 1f) {
+                stepTimer = 0;
+                countdown--;
+            }
+        } else {
+            countdown = GlobalVariables.eventCountDown;
+            event.trigger();
         }
-
-        return false;
-    }
-
-    public int getCountdown() {
-        if (countdownStarted && !gooseStampedeActive) {
-            return (int) Math.ceil(countdown);
-        }
-
-        return 0;
     }
 }

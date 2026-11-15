@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import io.github.duckduckgoose.items.AbstractItem;
+import io.github.duckduckgoose.utils.ItemStack;
+import io.github.duckduckgoose.utils.GlobalVariables;
 import io.github.duckduckgoose.utils.ItemArrayStack;
 
 public class Hotbar {
@@ -21,6 +21,7 @@ public class Hotbar {
 
     TextureRegionDrawable slotBackground;
     TextureRegionDrawable selectedSlotBackground;
+    Skin skin;
 
     public int getSize() { return size; }
 
@@ -39,12 +40,18 @@ public class Hotbar {
         update();
     }
 
+    public void addItemStack(ItemStack itemStack) {
+        itemArray.addItemStack(itemStack);
+        update();
+    }
+
     public void removeItem(int index) {
         itemArray.removeItem(index); update();
     }
 
     public Hotbar(int size) {
         this.size = size;
+        this.skin = GlobalVariables.skin;
         itemArray = new ItemArrayStack(size);
         cells = new Cell[size];
         table = new Table();
@@ -77,7 +84,18 @@ public class Hotbar {
             slots[i].clearChildren();
             AbstractItem item = itemArray.getItem(i);
             if (item != null) {
-                slots[i].add(new Image(new TextureRegionDrawable(item.getIcon()))).size(64);
+                Image icon = new Image(new TextureRegionDrawable(item.getIcon()));
+                int count = itemArray.getCount(i);
+                // The instance of stack here is the LibGDX UI stack not to be confused with the data-type
+                Stack stack = new Stack();
+                stack.add(icon);
+
+                Label countLabel = new Label(String.valueOf(count), skin);
+                Table overlay = new Table();
+                overlay.add(countLabel).expand().bottom().right().pad(2);
+                stack.add(overlay);
+
+                slots[i].add(stack).size(64);
             }
         }
     }
